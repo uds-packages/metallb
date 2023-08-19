@@ -1,0 +1,34 @@
+kind: ZarfPackageConfig
+metadata:
+  name: metallb
+  architecture: amd64
+
+constants:
+  - name: IP_ADDRESS_POOL
+    value: "###ZARF_PKG_TMPL_IP_ADDRESS_POOL###"
+
+components:
+  - name: metallb
+    required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: |
+              sed -i.bak "s|##IP_ADDRESS_POOL##|###ZARF_PKG_TMPL_IP_ADDRESS_POOL###|g" manifests/ipaddresspool.yaml
+
+    charts:
+      - name: metallb 
+        version: 0.13.10
+        namespace: metallb-system
+        url: https://metallb.github.io/metallb
+    images:
+      - quay.io/frrouting/frr:8.4.2
+      - quay.io/metallb/controller:v0.13.10
+      - quay.io/metallb/speaker:v0.13.10
+    manifests:
+      - name: metallb-config
+        files:
+          - manifests/ipaddresspool.yaml
+          - manifests/l2advertisement.yaml
+        namespace: metallb-system
+    

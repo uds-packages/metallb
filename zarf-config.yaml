@@ -1,0 +1,7 @@
+log-level: info
+architecture: amd64
+package:
+  create: 
+    max_package_size: "1000000000"
+    set:
+      IP_ADDRESS_POOL: 1.2.3.4-1.2.3.7
