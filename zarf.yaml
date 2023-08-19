@@ -3,18 +3,18 @@ metadata:
   name: metallb
   architecture: amd64
 
-constants:
+variables:
   - name: IP_ADDRESS_POOL
-    value: "###ZARF_PKG_TMPL_IP_ADDRESS_POOL###"
 
 components:
   - name: metallb
     required: true
     actions:
-      onCreate:
-        before:
-          - cmd: |
-              sed -i.bak "s|##IP_ADDRESS_POOL##|###ZARF_PKG_TMPL_IP_ADDRESS_POOL###|g" manifests/ipaddresspool.yaml
+      onDeploy:
+        after:
+          - cmd: echo "Setting IP Address Pool"
+            setVariables:
+              - name: IP_ADDRESS_POOL
 
     charts:
       - name: metallb 

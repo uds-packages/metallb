@@ -5,4 +5,4 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - ##IP_ADDRESS_POOL##
+  - ###ZARF_VAR_IP_ADDRESS_POOL###

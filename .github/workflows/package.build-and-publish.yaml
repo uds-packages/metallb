@@ -37,7 +37,7 @@ jobs:
       with:
         version: v0.29.0
     - name: Build Package
-      run: zarf package create
+      run: zarf package create --confirm
     - name: Publish Package
       if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
       run: zarf package publish zarf-package-*.tar.zst oci://ghcr.io/defenseunicorns/packages 
