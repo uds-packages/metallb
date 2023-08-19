@@ -2,6 +2,7 @@ kind: ZarfPackageConfig
 metadata:
   name: metallb
   architecture: amd64
+  version: "0.0.1"
 
 variables:
   - name: IP_ADDRESS_POOL
