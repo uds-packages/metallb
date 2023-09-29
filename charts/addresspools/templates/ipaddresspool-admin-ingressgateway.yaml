@@ -1,0 +1,17 @@
+{{- if .Values.ipAddressAdminIngressgateway }}
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: admin-ingressgateway
+  namespace: metallb-system
+spec:
+  addresses:
+    - {{ .Values.ipAddressAdminIngressgateway }}/32
+  serviceAllocation:
+    priority: 50
+    namespaces:
+      - istio-system
+    serviceSelectors:
+      - matchLabels:
+          app: admin-ingressgateway
+{{- end }}

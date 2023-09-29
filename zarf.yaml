@@ -2,17 +2,45 @@ kind: ZarfPackageConfig
 metadata:
   name: metallb
   architecture: amd64
+  # This version should stay in sync with the version in the addresspools/Chart.yaml file.
   version: "0.0.2"
 
 variables:
   - name: IP_ADDRESS_POOL
     description: The pool of IP addresses to use for ingress to the cluster
+    default: ""
+    prompt: false
+  - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
+    description: When using this package in concert with DUBBD, the IP address of the admin-ingressgateway service
+    default: ""
+    prompt: false
+  - name: IP_ADDRESS_KEYCLOAK_INGRESSGATEWAY
+    description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
+    default: ""
+    prompt: false
+  - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
+    description: When using this package in concert with DUBBD, the IP address of the tenant-ingressgateway service
+    default: ""
+    prompt: false
 
 components:
+  - name: preflight
+    required: true
+    actions:
+      onDeploy:
+        before:
+          # Pass the check if:
+          #   IP_ADDRESS_POOL is set
+          #   OR
+          #   IP_ADDRESS_ADMIN_INGRESSGATEWAY AND IP_ADDRESS_TENANT_INGRESSGATEWAY are set
+          - description: Validating input variables...
+            cmd: |
+              [ -n "$ZARF_VAR_IP_ADDRESS_POOL" ] || { [ -n "$ZARF_VAR_IP_ADDRESS_ADMIN_INGRESSGATEWAY" ] && [ -n "$ZARF_VAR_IP_ADDRESS_TENANT_INGRESSGATEWAY" ]; } || { echo "Invalid input variables. You are required to at least set either IP_ADDRESS_POOL or IP_ADDRESS_ADMIN_INGRESSGATEWAY and IP_ADDRESS_TENANT_INGRESSGATEWAY"; exit 1; }
+
   - name: metallb
     required: true
     charts:
-      - name: metallb 
+      - name: metallb
         version: 0.13.10
         namespace: metallb-system
         url: https://metallb.github.io/metallb
@@ -20,9 +48,13 @@ components:
       - quay.io/frrouting/frr:8.4.2
       - quay.io/metallb/controller:v0.13.10
       - quay.io/metallb/speaker:v0.13.10
-    manifests:
-      - name: metallb-config
-        files:
-          - manifests/ipaddresspool.yaml
-          - manifests/l2advertisement.yaml
+
+  - name: addresspools
+    required: true
+    charts:
+      - name: addresspools
+        version: 0.0.2
         namespace: metallb-system
+        localPath: charts/addresspools
+        valuesFiles:
+          - values/addresspools-values.yaml

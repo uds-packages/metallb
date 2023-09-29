@@ -1,8 +1,10 @@
+{{- if .Values.ipAddressPool }}
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: ingress-ips
+  name: default
   namespace: metallb-system
 spec:
   addresses:
-  - ###ZARF_VAR_IP_ADDRESS_POOL###
+    - {{ .Values.ipAddressPool }}
+{{- end }}

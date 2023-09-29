@@ -1,8 +1,10 @@
+{{- if .Values.ipAddressAdminIngressgateway }}
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: metallb-pool
+  name: admin-ingressgateway
   namespace: metallb-system
 spec:
   ipAddressPools:
-  - ingress-ips
+    - admin-ingressgateway
+{{- end }}

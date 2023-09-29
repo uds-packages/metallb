@@ -1,0 +1,8 @@
+# Default values for addresspools.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ipAddressPool: "###ZARF_VAR_IP_ADDRESS_POOL###"
+ipAddressAdminIngressgateway: "###ZARF_VAR_IP_ADDRESS_ADMIN_INGRESSGATEWAY###"
+ipAddressKeycloakIngressgateway: "###ZARF_VAR_IP_ADDRESS_KEYCLOAK_INGRESSGATEWAY###"
+ipAddressTenantIngressgateway: "###ZARF_VAR_IP_ADDRESS_TENANT_INGRESSGATEWAY###"

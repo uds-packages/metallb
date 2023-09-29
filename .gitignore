@@ -1,2 +1,4 @@
+.idea/
+zarf-sbom/
 zarf-package-*.tar.zst
 *.bak
