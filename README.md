@@ -52,13 +52,21 @@ $ zarf package deploy oci://ghcr.io/defenseunicorns/packages/metallb:<version> \
 
 ## Contributing
 
-### Create
+### Create Package
 
 Create this package by cloning down the repo and running the following in the root of the repo:
 
 ```shell
 $ zarf package create .
 ```
+
+### Commit Messages
+
+Because we use the [release-please](https://github.com/googleapis/release-please) bot, commit messages to main must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. This is only a requirement for the `main` branch. Commit messages in PRs can be whatever you want them to be. "Squash" mode must be used when merging a PR, with a commit message that follows the Conventional Commits specification.
+
+### Release Process
+
+This repo uses the [release-please](https://github.com/googleapis/release-please) bot. Release-please will automatically open a PR to update the version of the repo when a commit is merged to `main` that follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. The bot will automatically keep the PR up to date until a human merges it. When that happens the bot will automatically create a new release.
 
 ## Known Issues
 
