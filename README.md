@@ -39,8 +39,8 @@ Or, in the case of using this package in concert with DUBBD and/or IDAM package:
 ```shell
 $ zarf package deploy oci://ghcr.io/defenseunicorns/packages/metallb:<version> \
     --set IP_ADDRESS_ADMIN_INGRESSGATEWAY=10.0.0.32 \
-    --set IP_ADDRESS_KEYCLOAK_INGRESSGATEWAY=10.0.0.33 \
-    --set IP_ADDRESS_TENANT_INGRESSGATEWAY=10.0.0.34 \
+    --set IP_ADDRESS_TENANT_INGRESSGATEWAY=10.0.0.33 \
+    --set IP_ADDRESS_KEYCLOAK_INGRESSGATEWAY=10.0.0.34 \
     --confirm
 ```
 
