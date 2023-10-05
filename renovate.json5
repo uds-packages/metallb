@@ -42,7 +42,12 @@
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?newTag:\\s(?<currentValue>.*)\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}",
-      "extractVersionTemplate": "^v?(?<version>.*)$"
+    },
+    {
+      fileMatch: ["zarf.yaml"],
+      matchStrings: [
+        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?.*:(?<currentValue>.*)\\s"
+      ]
     }
   ],
   packageRules: [
