@@ -5,12 +5,11 @@
 
 ### ⚠ BREAKING CHANGES
 
-* align gateways with uds-core, allow config extensibility
+* align gateways with uds-core, allow config extensibility ([#27](https://github.com/defenseunicorns/uds-capability-metallb/pull/27))
 
 ### Features
 
-* align gateways with uds-core, allow config extensibility ([2a730e2](https://github.com/defenseunicorns/uds-capability-metallb/commit/2a730e2c8c363a1557df903adde5ef9d476f4a99))
-* **gateways:** enhance admin and passthrough ingress configurations ([7e33a73](https://github.com/defenseunicorns/uds-capability-metallb/commit/7e33a73da5285f14a6a1143aa605e81cddbc237a))
+* align gateways with uds-core, allow config extensibility ([#27](https://github.com/defenseunicorns/uds-capability-metallb/pull/27))
 
 
 ### Bug Fixes
