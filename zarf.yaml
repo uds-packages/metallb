@@ -66,7 +66,7 @@ components:
         localPath: charts/addresspools
         variables:
           - name: INTERFACE
-            path: interface.name
+            path: interface
           - name: IP_ADDRESS_POOL
             path: default.ipAddressPoolCIDR
           - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
