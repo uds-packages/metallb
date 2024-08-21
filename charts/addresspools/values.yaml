@@ -23,4 +23,5 @@ passthroughIngress:
   matchLabels:
     app: passthrough-ingressgateway
 
-interface: ""
+interface:
+  name: ""
