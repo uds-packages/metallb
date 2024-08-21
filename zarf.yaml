@@ -74,6 +74,6 @@ components:
           - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
             path: passthroughIngress.ipAddressPool
           - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
-            path: tenantIngress.ipAddresPool
-        valuesFiles:
-          - values/addresspools-values.yaml
+            path: tenantIngress.ipAddressPool
+        # valuesFiles:
+        #   - values/addresspools-values.yaml
