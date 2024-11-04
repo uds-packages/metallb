@@ -1,0 +1,26 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+# Values for upstream flavor
+
+metallb:
+  prometheus:
+    rbacProxy:
+      repository: gcr.io/kubebuilder/kube-rbac-proxy
+      tag: v0.12.0
+
+  controller:
+    image:
+      repository: quay.io/metallb/controller
+      tag:
+
+  speaker:
+    image:
+      repository: quay.io/metallb/speaker
+      tag:
+
+    frr:
+      image:
+        repository: quay.io/frrouting/frr
+        tag: 9.1.0
+

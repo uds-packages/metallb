@@ -1,0 +1,26 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+# Values for unicorn flavor
+
+metallb:
+  prometheus:
+    rbacProxy:
+      repository: gcr.io/kubebuilder/kube-rbac-proxy
+      tag: v0.12.0
+
+  controller:
+    image:
+      repository: cgr.dev/chainguard/metallb-controller-fips
+      tag: 0.14.8
+
+  speaker:
+    image:
+      repository: cgr.dev/chainguard/metallb-speaker-fips
+      tag: 0.14.8
+
+    frr:
+      image:
+        repository: quay.io/frrouting/frr
+        tag: 9.1.0
+

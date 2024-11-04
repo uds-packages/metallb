@@ -1,0 +1,35 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: metallb-common
+  description: "UDS MetalLB Common Package"
+
+components:
+  - name: metallb
+    required: true
+    charts:
+      - name: uds-metallb-config
+        namespace: metallb
+        version: 0.1.0
+        localPath: ../chart
+      - name: metallb
+        namespace: metallb
+        url: https://metallb.github.io/metallb
+        gitPath: chart
+        version: v0.14.8
+        valuesFiles:
+          - ../values/common-values.yaml
+    actions:
+      onDeploy:
+        after:
+          - description: Validate MetalLB Package
+            maxTotalSeconds: 300
+            wait:
+              cluster:
+                kind: packages.uds.dev
+                name: metallb
+                namespace: metallb
+                condition: "'{.status.phase}'=Ready"

@@ -1,72 +1,72 @@
-# uds-package-metallb
+# UDS Package Template
 
-Zarf package containing a standalone version of [MetalLB](https://metallb.org/) to act as a standalone load-balancer or be a pre-req to UDS Core.
+UDS package template is a starting point for creating a new UDS package. It includes a basic structure for a UDS package and a set of tasks to help you get started.
 
-## Prerequisites
+> [!TIP]
+> Found an issue in this template or looking for how to contribute? Check out the [Contributing Guidelines](#contributing)
 
-- Zarf is installed locally with a minimum version of [v0.27.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.27.1)
-- (Optional): A working Kubernetes cluster on v1.26+ -- e.g k3d, k3s, KinD, etc. (Zarf can be used to deploy a built-in k3s distribution)
-- Working kube context (kubectl get nodes <-- this command works)
-- Zarf State and Registry initialized and operational in your cluster (Git is not required by this package)
-- No other Service LoadBalancer implementations are installed in the cluster (e.g. K3s's ServiceLB, another MetalLB, etc)
+After creating a repo from the UDS Package Template, follow [Making it your own](#make-it-your-own) documentation in order to customize the template for a new application package.
 
-## Using
+## Make it your own
 
-### Deploy
+1. Replace some common placeholders
 
-Deploy this package by first determining what IP addresses you are able to use:
+| value                                 | replace_with                | example                                                |
+| ------------------------------------- | --------------------------- | ------------------------------------------------------ |
+| `metallb`         | application name            | nginx, mattermost, cert-manager, etc...                |
+| `MetalLB` | application name for humans | NGINX, Mattermost Cert Manager, etc...                 |
+| `https://metallb.github.io/metallb`               | chart repository URL        | `https://charts.jetstack.io/`                          |
+| `#UDS_PACKAGE_REPO#`                  | package repository URL      | `https://github.com/defenseunicorns/uds-package-nginx` |
 
-```shell
-$ ip addr
-1: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 12:34:56:78:90:ab brd ff:ff:ff:ff:ff:ff
-    inet 10.0.0.10/24 brd 10.0.0.255 scope global noprefixroute
-       valid_lft forever preferred_lft forever
-    inet6 1234::5678:90ab:cdef:1234/64 scope link noprefixroute 
-       valid_lft forever preferred_lft forever
+2. Review, determine your need, and update
+
+The following files will need to be customized for the application being packaged and include things like dependencies and application specific helm values. Examples have been included for reference.
+
+| File/Directory                | Function                                                                                                                                                                                                                                                                                                                                                                                      | New Package ToDos                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| :---------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| .github/                      | **CICD** pipeline specification                                                                                                                                                                                                                                                                                                                                                               | If the package requires any workflow customizations, such as needing specific runners testing other flavors, they can be customized. Else the template values should work fine.                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| adr/                          | **DOCS**: Architecture Design Records.                                                                                                                                                                                                                                                                                                                                                        | Record any architectural decisions per the format found in this directory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| bundle/                       | **DEV/TEST**: Test/example UDS bundle used to test the UDS package with UDS core. Should include any required dependencies and configuration needed for a test deployment.                                                                                                                                                                                                                    | Update fields to match this app's name, version, etc.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| chart/                        | **CHART**: Contains helm chart for [UDS Package custom resources](https://github.com/defenseunicorns/uds-core/blob/main/docs/configuration/uds-operator.md). Used to configure things like SSO, Virtual Services, Network Polices, etc. Can also contain any extra K8s manifests which need deployed before/after the main application.                                                       | Customize UDS configuration chart for application. At a minimum it should include a uds-package that provisions required network policies and any required SSO configuration.                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| common/zarf.yaml              | **ZARF PACKAGE**: Root zarf package definition for _this app_ conventionally placed in `common/`. The root-level `zarf.yaml` imports this by explicit reference to this file path.                                                                                                                                                                                                            | Customize to include application images, helm chart, variables, version, etc.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| docs/                         | **DOCS**: Package specific documentation such as detailed configuration info that is too indepth to go in the README                                                                                                                                                                                                                                                                          | Add documentation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| src/                          | **DEV/TEST**: New/bespoke Zarf packages to support dev/test bundle. These must exist before the main package is deployed, but are not part of it. One use-case is creating the namespace where Minio can deploy secrets _before_ the app that would otherwise create that namespace comes to exist. Other use-cases are databases (probably should be it's own UDS package) and some secrets. | Add custom Zarf packages as necessary.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| tasks/                        | **DEV/TEST**: UDS filename-scoped tasks.                                                                                                                                                                                                                                                                                                                                                      | Add tasks as necessary to support your development loop. The templated tasks are often sufficient.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| tasks/tests.yaml              | **DEV/TEST**: UDS tasks defined for testing the package deployed.                                                                                                                                                                                                                                                                                                                             | Customize based on application resource names and types, playwright tests that need to run, and/or custom resources that the application manages.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| tests/                        | **DEV/TEST**: Test files included are examples only since testing is very application specific and may include UI testing with playwright, testing custom resources being deployed in cluster, or other types of tests not included in the examples.                                                                                                                                          | If application creates resources in cluster based on custom resources (example applications: cert-manager, trust-manager, database operators, etc), then test data can include a zarf package that deploys a custom resource so tests can ensure the application is creating resources as expected `tests/optional-example-zarf-tests/*`.<br/><br/>If application has an exposed web interface to test, then customize these files for playwright to authenticate and test application endpoints. Rename template-application-name to match your application name `tests/template-application-name.test.ts` `tests/auth.setup.ts` |
+| .release-please-manifest.json | **ZARF PACKAGE**: Release version info.                                                                                                                                                                                                                                                                                                                                                       | Update version in concert with other version records.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| README.md                     | **DOCS**: UDS package README.                                                                                                                                                                                                                                                                                                                                                                 | Replace contents of README.md with README-template.md and customize for application being packaged when done following this README's guidance.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| renovate.json                 | **CICD**: Custom rules for renovate to update things.                                                                                                                                                                                                                                                                                                                                         | Add any custom package rules if needed for renovate to properly update things such as repo1 packages. Includes an example.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| version.txt                   | **ZARF PACKAGE**: Text file with UDS package version specification.                                                                                                                                                                                                                                                                                                                           | Update as the UDS package is updated.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| zarf.yaml                     | **ZARF PACKAGE**: top-level Zarf package definition.                                                                                                                                                                                                                                                                                                                                          | Copy from `common/zarf.yaml` the settings you'd like to expose for changes, much like a top-level values.yaml file. Often flavors, images, and variables are also specified primarily here, not in `common/zarf.yaml`.                                                                                                                                                                                                                                                                                                                                                                                                            |
+
+3. Request Github Runners
+   Send this message in slack#techsupport
+
+   ```
+   :msg-question: @github-admins Requesting `UDS Marketplace` runner group for <your app repo url> Thank you!
+   ```
+
+4. Almost there...
+   - `mv README-template.md README.md`
+   - `rm -rf tasks/template.yaml`
+   - Remove extra lines from [tasks.yaml](./tasks.yaml)
+
+You are ready to start integrating (and testing with CI) your application with UDS Core!
+
+## Tips
+
+When you're ready to create your first release, here is an easy command to get release-please on the version you want (instead of modifying the files manually):
+
+```bash
+git commit --allow-empty -m "chore: release <upstream-app-version>-uds.<uds-sub-version>" -m "Release-As: <upstream-app-version>-uds.<uds-sub-version>"
 ```
-
-Then deploy the package specifying the ingress IP addresses that you would like to use:
-
-```shell
-$ zarf package deploy oci://ghcr.io/defenseunicorns/packages/metallb:<version> \
-    --set IP_ADDRESS_POOL=10.0.0.32/27 \
-    --confirm
-```
-
-Or, in the case of using this package in concert with UDS Core:
-
-```shell
-$ zarf package deploy oci://ghcr.io/defenseunicorns/packages/metallb:<version> \
-    --set IP_ADDRESS_ADMIN_INGRESSGATEWAY=10.0.0.32 \
-    --set IP_ADDRESS_TENANT_INGRESSGATEWAY=10.0.0.33 \
-    --set IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY=10.0.0.34 \
-    --confirm
-```
-
-> Notes:
->   - The IP addresses used here are placeholders. You can use whatever values you want that work for your environment.
->   - Package versions can be found [here](https://github.com/defenseunicorns/uds-package-metallb/pkgs/container/packages%2Fmetallb)
->   - If you also want a 4th default IPAddressPool you can additionally set the `IP_ADDRESS_POOL` variable too. It should be an IP range, not a single address unlike the other variables which are single address. Ranges can be specified in either CIDR notation or "StartAddress-EndAddress" notation.
 
 ## Contributing
 
-### Create Package
+> [!NOTE]
+> As a template repository, the [CONTRIBUTING.md](./CONTRIBUTING.md) file is a part of the template and NOT the contributing guidelines for this repository. The contributing guidelines for this repository are articulated here.
 
-Create this package by cloning down the repo and running the following in the root of the repo:
+This template repository is part of Defense Unicorns' Unicorn Delivery Service and follows the contributing guidelines outlined in that repositories' [CONTRIBUTING.md](https://github.com/defenseunicorns/uds-common/blob/main/CONTRIBUTING.md) file.
 
-```shell
-$ zarf package create .
-```
-
-### Commit Messages
-
-Because we use the [release-please](https://github.com/googleapis/release-please) bot, commit messages to main must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. This is only a requirement for the `main` branch. Commit messages in PRs can be whatever you want them to be. "Squash" mode must be used when merging a PR, with a commit message that follows the Conventional Commits specification.
-
-### Release Process
-
-This repo uses the [release-please](https://github.com/googleapis/release-please) bot. Release-please will automatically open a PR to update the version of the repo when a commit is merged to `main` that follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. The bot will automatically keep the PR up to date until a human merges it. When that happens the bot will automatically create a new release.
-
-## Known Issues
-
-This package is meant as a simple way to get MetalLB working for smaller clusters and doesn't support many of the more advanced options that MetalLB has.
+Feel free to [open a new issue](https://github.com/defenseunicorns/uds-package-template/issues/new/choose) for any defects or feature requests.

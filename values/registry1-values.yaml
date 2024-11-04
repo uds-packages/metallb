@@ -1,0 +1,26 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+# Values for registry1 flavor
+
+metallb:
+  prometheus:
+    rbacProxy:
+      repository: gcr.io/kubebuilder/kube-rbac-proxy
+      tag: v0.12.0
+
+  controller:
+    image:
+      repository: registry1.dso.mil/ironbank/opensource/metallb/controller
+      tag: v0.14.5
+
+  speaker:
+    image:
+      repository: registry1.dso.mil/ironbank/opensource/metallb/speaker
+      tag: v0.14.5
+
+    frr:
+      image:
+        repository: quay.io/frrouting/frr
+        tag: 9.1.0
+

@@ -1,84 +1,65 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
   name: metallb
-  architecture: amd64
-  # This version should stay in sync with the version in the addresspools/Chart.yaml file.
+  description: "UDS MetalLB package"
   # x-release-please-start-version
-  version: "0.1.2"
+  version: "0.0.1-uds.0"
   # x-release-please-end
+  architecture: amd64
 
 variables:
-  - name: IP_ADDRESS_POOL
-    description: The pool of IP addresses to use for ingress to the cluster
-    default: ""
-    prompt: false
-  - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
-    description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
-    default: ""
-    prompt: false
-  - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
-    description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
-    default: ""
-    prompt: false
-  - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
-    description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
-    default: ""
-    prompt: false
-  - name: INTERFACE
-    description: When using this package in concert with UDS Core, the network interface of the K8s nodes which MetalLB should use
-    default: ""
-    prompt: false
+  - name: EXAMPLE_VARIABLES
+    default: "examples"
+  - name: DOMAIN
+    default: "uds.dev"
+  - name: EXAMPLE_DB_USERNAME
+    default: "example_username"
+  - name: EXAMPLE_DB_ENDPOINT
+    default: "example_db_endpoint"
 
 components:
-  - name: preflight
+  - name: metallb
     required: true
-    actions:
-      onDeploy:
-        before:
-          # Pass the check if:
-          #   IP_ADDRESS_POOL is set
-          #   OR
-          #   IP_ADDRESS_ADMIN_INGRESSGATEWAY AND IP_ADDRESS_TENANT_INGRESSGATEWAY are set
-          - description: Validating input variables...
-            cmd: |
-              [ -n "$ZARF_VAR_IP_ADDRESS_POOL" ] || { [ -n "$ZARF_VAR_IP_ADDRESS_ADMIN_INGRESSGATEWAY" ] && [ -n "$ZARF_VAR_IP_ADDRESS_TENANT_INGRESSGATEWAY" ]; } || { echo "Invalid input variables. You are required to at least set either IP_ADDRESS_POOL or IP_ADDRESS_ADMIN_INGRESSGATEWAY and IP_ADDRESS_TENANT_INGRESSGATEWAY"; exit 1; }
+    description: "Deploy MetalLB"
+    import:
+      path: common
+    only:
+      flavor: upstream
+    charts:
+      - name: metallb
+        valuesFiles:
+          - values/upstream-values.yaml
+    images: []
 
   - name: metallb
     required: true
-    manifests:
-      - name: metallb
-        kustomizations:
-          - kustomizations/
-    images:
-      # renovate: datasource=docker versioning=semver
-      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.14.5
-      # renovate: datasource=docker versioning=semver
-      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.14.5
-
-  - name: addresspools
-    required: true
+    description: "Deploy MetalLB"
+    import:
+      path: common
+    only:
+      flavor: registry1
+      cluster:
+        architecture: amd64
     charts:
-      - name: addresspools
-        # x-release-please-start-version
-        version: "0.1.2"
-        # x-release-please-end
-        namespace: metallb-system
-        localPath: charts/addresspools
-        variables:
-          - name: INTERFACE
-            path: interface
-            description: The network interface of the K8s nodes which MetalLB should use
-          - name: IP_ADDRESS_POOL
-            path: default.ipAddressPoolCIDR
-            description: The pool of IP addresses to use for ingress to the cluster
-          - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
-            path: adminIngress.ipAddressPool
-            description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
-          - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
-            path: passthroughIngress.ipAddressPool
-            description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
-          - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
-            path: tenantIngress.ipAddressPool
-            description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
-        # valuesFiles:
-        #   - values/addresspools-values.yaml
+      - name: metallb
+        valuesFiles:
+          - values/registry1-values.yaml
+
+  - name: metallb
+    required: true
+    description: "Deploy MetalLB"
+    import:
+      path: common
+    only:
+      flavor: unicorn
+      cluster:
+        architecture: amd64
+    charts:
+      - name: metallb
+        valuesFiles:
+          - values/unicorn-values.yaml
+    images: []
