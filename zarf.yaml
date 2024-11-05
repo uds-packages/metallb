@@ -5,21 +5,34 @@
 kind: ZarfPackageConfig
 metadata:
   name: metallb
-  description: "UDS MetalLB package"
+  #architecture: amd64
+  # This version should stay in sync with the version in the addresspools/Chart.yaml file.
   # x-release-please-start-version
-  version: "0.0.1-uds.0"
+  version: "0.1.2-uds.0"
   # x-release-please-end
-  architecture: amd64
 
 variables:
-  - name: EXAMPLE_VARIABLES
-    default: "examples"
-  - name: DOMAIN
-    default: "uds.dev"
-  - name: EXAMPLE_DB_USERNAME
-    default: "example_username"
-  - name: EXAMPLE_DB_ENDPOINT
-    default: "example_db_endpoint"
+  - name: IP_ADDRESS_POOL
+    description: The pool of IP addresses to use for ingress to the cluster
+    default: ""
+    prompt: false
+  - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
+    description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
+    default: ""
+    prompt: false
+  - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
+    description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
+    default: ""
+    prompt: false
+  - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
+    description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
+    default: ""
+    prompt: false
+  - name: INTERFACE
+    description: When using this package in concert with UDS Core, the network interface of the K8s nodes which MetalLB should use
+    default: ""
+    prompt: false
+
 
 components:
   - name: metallb

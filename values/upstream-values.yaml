@@ -18,9 +18,3 @@ metallb:
     image:
       repository: quay.io/metallb/speaker
       tag:
-
-    frr:
-      image:
-        repository: quay.io/frrouting/frr
-        tag: 9.1.0
-

@@ -7,7 +7,7 @@ metadata:
   name: example-zarf-tests
   description: "Example zarf package for testing functionality of operators and other services deployed by UDS package"
   architecture: "amd64"
-  version: "0.0.1"
+  version: "0.1.2"
 
 variables:
   - name: EXAMPLE_SECRET_VALUE

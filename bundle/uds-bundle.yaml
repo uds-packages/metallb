@@ -6,7 +6,7 @@ metadata:
   name: metallb-test
   description: A UDS bundle for deploying MetalLB and its dependencies on a development cluster
   # x-release-please-start-version
-  version: 0.0.1-uds.0
+  version: 0.1.2-uds.0
   # x-release-please-end
 
 packages:
@@ -22,5 +22,5 @@ packages:
   - name: metallb
     path: ../
     # x-release-please-start-version
-    ref: 0.0.1-uds.0
+    ref: 0.1.2-uds.0
     # x-release-please-end

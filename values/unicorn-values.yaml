@@ -18,9 +18,3 @@ metallb:
     image:
       repository: cgr.dev/chainguard/metallb-speaker-fips
       tag: 0.14.8
-
-    frr:
-      image:
-        repository: quay.io/frrouting/frr
-        tag: 9.1.0
-

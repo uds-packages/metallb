@@ -18,9 +18,3 @@ metallb:
     image:
       repository: registry1.dso.mil/ironbank/opensource/metallb/speaker
       tag: v0.14.5
-
-    frr:
-      image:
-        repository: quay.io/frrouting/frr
-        tag: 9.1.0
-

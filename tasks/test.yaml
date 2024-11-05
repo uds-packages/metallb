@@ -37,7 +37,7 @@ tasks:
       - cmd: |
           ./uds zarf package deploy \
             --set EXAMPLE_SECRET_VALUE="$(cat testCA.pem | base64 -w 0)" \
-            zarf-package-example-zarf-tests-"${UDS_ARCH}"-0.0.1.tar.zst \
+            zarf-package-example-zarf-tests-"${UDS_ARCH}"-0.1.2.tar.zst \
             --confirm
         dir: tests/optional-example-zarf-tests
       # Ensure expected resource is generated in some namespace. In this example it is checking for a configmap
@@ -52,25 +52,4 @@ tasks:
           rm testCA.key testCA.pem
         dir: tests/optional-example-zarf-tests
 
-  - name: ingress
-    actions:
-      - description: MetalLB UI Status Check
-        maxRetries: 30
-        cmd: |
-          STATUS=$(curl -s 'https://metallb.uds.dev/api/system/status' | ./uds zarf tools yq '.status')
-          echo "metallb system status: ${STATUS}"
-          if [ "$STATUS" != "UP" ]; then
-            sleep 10
-            exit 1
-          fi
 
-  - name: ui
-    description: MetalLB UI Checks
-    actions:
-      - cmd: |
-          docker run --rm --ipc=host --net=host --mount type=bind,source="$(pwd)",target=/app mcr.microsoft.com/playwright:v1.47.2-jammy sh -c " \
-            cd app && \
-            npm ci && \
-            npx playwright test \
-            "
-        dir: tests

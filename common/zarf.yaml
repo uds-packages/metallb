@@ -8,13 +8,26 @@ metadata:
   description: "UDS MetalLB Common Package"
 
 components:
+  - name: preflight
+    required: true
+    actions:
+      onDeploy:
+        before:
+          # Pass the check if:
+          #   IP_ADDRESS_POOL is set
+          #   OR
+          #   IP_ADDRESS_ADMIN_INGRESSGATEWAY AND IP_ADDRESS_TENANT_INGRESSGATEWAY are set
+          - description: Validating input variables...
+            cmd: |
+              [ -n "$ZARF_VAR_IP_ADDRESS_POOL" ] || { [ -n "$ZARF_VAR_IP_ADDRESS_ADMIN_INGRESSGATEWAY" ] && [ -n "$ZARF_VAR_IP_ADDRESS_TENANT_INGRESSGATEWAY" ]; } || { echo "Invalid input variables. You are required to at least set either IP_ADDRESS_POOL or IP_ADDRESS_ADMIN_INGRESSGATEWAY and IP_ADDRESS_TENANT_INGRESSGATEWAY"; exit 1; }
+    
   - name: metallb
     required: true
     charts:
       - name: uds-metallb-config
         namespace: metallb
         version: 0.1.0
-        localPath: ../chart
+        localPath: ../charts/metallb
       - name: metallb
         namespace: metallb
         url: https://metallb.github.io/metallb
@@ -22,6 +35,32 @@ components:
         version: v0.14.8
         valuesFiles:
           - ../values/common-values.yaml
+  - name: addresspools
+    required: true
+    charts:
+      - name: addresspools
+        # x-release-please-start-version
+        version: "0.1.2"
+        # x-release-please-end
+        namespace: metallb-system
+        localPath: charts/addresspools
+        variables:
+          - name: INTERFACE
+            path: interface
+            description: The network interface of the K8s nodes which MetalLB should use
+          - name: IP_ADDRESS_POOL
+            path: default.ipAddressPoolCIDR
+            description: The pool of IP addresses to use for ingress to the cluster
+          - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
+            path: adminIngress.ipAddressPool
+            description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
+          - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
+            path: passthroughIngress.ipAddressPool
+            description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
+          - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
+            path: tenantIngress.ipAddressPool
+            description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
+            
     actions:
       onDeploy:
         after:
