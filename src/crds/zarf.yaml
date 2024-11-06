@@ -1,0 +1,16 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+kind: ZarfPackageConfig
+metadata:
+  name: metallb-crds
+  description: "Deploy CustomResourceDefinitions for MetalLB"
+  version: 0.1.0
+
+components:
+  - name: deploy-crds
+    required: true
+    manifests:
+      - name: dev-crds
+        files:
+          - crds.yaml

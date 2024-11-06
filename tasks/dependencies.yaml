@@ -5,4 +5,6 @@ tasks:
   - name: create
     description: Create the Dependency Zarf Package(s)
     actions:
-      - cmd: uds zarf package create src/namespace/ --confirm --no-progress --architecture="${UDS_ARCH}" --skip-sbom
+      - cmd: |
+           uds zarf package create src/namespace/ --confirm --no-progress --architecture="${UDS_ARCH}" --skip-sbom
+           uds zarf package create src/crds/ --confirm --no-progress --architecture="${UDS_ARCH}" --skip-sbom
