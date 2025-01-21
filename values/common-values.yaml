@@ -12,3 +12,5 @@ speaker:
   securityContext:
     fsGroup: 65532
     runAsUser: 0
+  frr:
+    enabled: false
