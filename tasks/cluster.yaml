@@ -14,4 +14,4 @@ tasks:
               --api-port 6550 \
               --k3s-arg "--disable=traefik@server:*" \
               --k3s-arg "--disable=metrics-server@server:*" \
-              --k3s-arg "--disable=servicelb@server:*" \
+              --k3s-arg "--disable=servicelb@server:*" uds
