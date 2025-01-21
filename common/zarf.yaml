@@ -1,0 +1,49 @@
+# Copyright 2025 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+kind: ZarfPackageConfig
+metadata:
+  name: uds-metallb-common
+  description: "UDS MetalLB Common"
+  url: https://github.com/metallb/metallb
+
+components:
+  - name: metallb
+    required: true
+    charts:
+      - name: metallb
+        namespace: metallb-system
+        url: https://metallb.github.io/metallb
+        version: 0.14.9
+        valuesFiles:
+          - "../values/common-values.yaml"
+      - name: addresspools
+        version: "0.1.2"
+        namespace: metallb-system
+        localPath: chart
+        variables:
+          - name: INTERFACE
+            path: interface
+            description: The network interface of the K8s nodes which MetalLB should use
+          - name: IP_ADDRESS_POOL
+            path: default.ipAddressPoolCIDR
+            description: The pool of IP addresses to use for ingress to the cluster
+          - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
+            path: adminIngress.ipAddressPool
+            description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
+          - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
+            path: passthroughIngress.ipAddressPool
+            description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
+          - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
+            path: tenantIngress.ipAddressPool
+            description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
+    actions:
+      onDeploy:
+        before:
+          # Pass the check if:
+          #   IP_ADDRESS_POOL is set
+          #   OR
+          #   IP_ADDRESS_ADMIN_INGRESSGATEWAY AND IP_ADDRESS_TENANT_INGRESSGATEWAY are set
+          - description: Validating input variables...
+            cmd: |
+              [ -n "$ZARF_VAR_IP_ADDRESS_POOL" ] || { [ -n "$ZARF_VAR_IP_ADDRESS_ADMIN_INGRESSGATEWAY" ] && [ -n "$ZARF_VAR_IP_ADDRESS_TENANT_INGRESSGATEWAY" ]; } || { echo "Invalid input variables. You are required to at least set either IP_ADDRESS_POOL or IP_ADDRESS_ADMIN_INGRESSGATEWAY and IP_ADDRESS_TENANT_INGRESSGATEWAY"; exit 1; }

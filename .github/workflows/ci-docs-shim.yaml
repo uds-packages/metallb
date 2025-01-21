@@ -1,0 +1,25 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+name: CI Doc Shim
+
+on:
+  pull_request:
+    branches: [main]
+    types: [milestoned, opened, synchronize]
+
+# Permissions for the GITHUB_TOKEN used by the workflow.
+permissions:
+  contents: read # Allows reading the content of the repository.
+
+jobs:
+  validate:
+    strategy:
+      matrix:
+        type: [install, upgrade]
+        flavor: [upstream, unicorn, registry1]
+    uses: defenseunicorns/uds-common/.github/workflows/callable-ci-docs-shim.yaml@664946ed5f6a5fe6a19f4ba6fcdc909981aefbe4 # v1.6.2
+    with:
+      flavor: ${{ matrix.flavor }}
+      type: ${{ matrix.type }}
+    secrets: inherit # Inherits all secrets from the parent workflow.
