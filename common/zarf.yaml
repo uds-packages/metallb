@@ -20,7 +20,7 @@ components:
       - name: addresspools
         version: "0.1.2"
         namespace: metallb-system
-        localPath: chart
+        localPath: ../charts/addresspools
         variables:
           - name: INTERFACE
             path: interface

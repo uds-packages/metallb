@@ -1,0 +1,17 @@
+# Copyright 2025 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+tasks:
+  - name: create
+    description: Create a K3d cluster to install metallb on
+    actions:
+      - description: Create a K3d cluster to install metallb on
+        cmd: |
+          k3d cluster delete uds
+          k3d cluster create \
+              -p "80:80@server:*" \
+              -p "443:443@server:*" \
+              --api-port 6550 \
+              --k3s-arg "--disable=traefik@server:*" \
+              --k3s-arg "--disable=metrics-server@server:*" \
+              --k3s-arg "--disable=servicelb@server:*" \

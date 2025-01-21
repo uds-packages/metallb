@@ -3,6 +3,7 @@
 
 includes:
   - test: ./tasks/test.yaml
+  - cluster: ./tasks/cluster.yaml
   - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.6.2/tasks/create.yaml
   - publish: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.6.2/tasks/publish.yaml
   - lint: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.6.2/tasks/lint.yaml
@@ -16,21 +17,21 @@ includes:
 
 tasks:
   - name: default
-    description: Create K3D Cluster with UDS-Core (Dev) and Valkey
+    description: Create K3D Cluster with UDS-Core (Dev) and MetalLB
     actions:
       - task: create-dev-package
-      - task: setup:k3d-test-cluster
+      - task: cluster:create
       - task: create-deploy-test-bundle
 
   - name: create-dev-package
-    description: Create the Valkey package
+    description: Create the MetalLB package
     actions:
       - task: create:package
         with:
           options: "--skip-sbom"
 
   - name: create-deploy-test-bundle
-    description: Test and validate cluster is deployed with Valkey
+    description: Test and validate cluster is deployed with MetalLB
     actions:
       - task: create:test-bundle
       - task: deploy:test-bundle
@@ -46,7 +47,7 @@ tasks:
 # CI will execute the following (via uds-common/.github/workflows/callable-[test|publish].yaml) so they need to be here with these names
 
   - name: test-install
-    description: Test the health of a Valkey deployment
+    description: Test the health of a MetalLB deployment
     actions:
       - task: create-dev-package
       - task: setup:k3d-test-cluster

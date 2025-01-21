@@ -1,0 +1,17 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+kind: UDSBundle
+metadata:
+  name: metallb-test
+  description: A UDS Bundle for MetalLB
+  version: dev
+
+packages:
+  - name: init
+    repository: ghcr.io/zarf-dev/packages/init
+    ref: v0.46.0
+
+  - name: metallb
+    path: ../
+    ref: dev
