@@ -3,3 +3,14 @@
 
 tasks:
   - name: all
+    description: Create and deploy an Nginx package to test that MetalLB lets traffic through
+    actions:
+      - cmd: |
+          ./uds zarf package create tests/ --confirm
+          ./uds zarf package deploy zarf-package-nginx-amd64.tar.zst --confirm
+          if curl -s https://hello.uds.dev | grep -q "Welcome to nginx!"; then
+            echo "Successfully hit Nginx through MetalLB"
+          else
+            echo "Failed to make a request to Nginx through MetalLB"
+            exit 1
+          fi

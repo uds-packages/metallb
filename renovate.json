@@ -9,7 +9,7 @@
   ],
   "packageRules": [
     {
-      "groupName": "Valkey Support Dependencies",
+      "groupName": "MetalLB Support Dependencies",
       "labels": [
         "support-deps"
       ],
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "groupName": "Valkey Package Dependencies",
+      "groupName": "MetalLB Package Dependencies",
       "labels": [
         "package-deps"
       ],
