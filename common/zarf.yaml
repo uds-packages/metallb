@@ -47,3 +47,28 @@ components:
           - description: Validating input variables...
             cmd: |
               [ -n "$ZARF_VAR_IP_ADDRESS_POOL" ] || { [ -n "$ZARF_VAR_IP_ADDRESS_ADMIN_INGRESSGATEWAY" ] && [ -n "$ZARF_VAR_IP_ADDRESS_TENANT_INGRESSGATEWAY" ]; } || { echo "Invalid input variables. You are required to at least set either IP_ADDRESS_POOL or IP_ADDRESS_ADMIN_INGRESSGATEWAY and IP_ADDRESS_TENANT_INGRESSGATEWAY"; exit 1; }
+          - description: Fix Helm ownership metadata for backwards compat w/v0.1.2
+            cmd: |
+              ./zarf tools kubectl annotate secret -n metallb-system metallb-webhook-cert meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate secret -n metallb-system metallb-webhook-cert meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate configmap -n metallb-system metallb-excludel2 meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate configmap -n metallb-system metallb-excludel2 meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition bfdprofiles.metallb.io meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition bfdprofiles.metallb.io meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition bgpadvertisements.metallb.io meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition bgpadvertisements.metallb.io meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition bgppeers.metallb.io meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition bgppeers.metallb.io meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition communities.metallb.io meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition communities.metallb.io meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition ipaddresspools.metallb.io meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition ipaddresspools.metallb.io meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition l2advertisements.metallb.io meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition l2advertisements.metallb.io meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition servicel2statuses.metallb.io meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate customresourcedefinition servicel2statuses.metallb.io meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl annotate validatingwebhookconfiguration metallb-webhook-configuration meta.helm.sh/release-name=metallb --overwrite=true || true
+              ./zarf tools kubectl annotate validatingwebhookconfiguration metallb-webhook-configuration meta.helm.sh/release-namespace=metallb-system --overwrite=true || true
+              ./zarf tools kubectl delete daemonset -n metallb-system speaker || true
+              ./zarf tools kubectl delete deployment -n metallb-system controller || true
+              ./zarf tools kubectl delete service -n metallb-system metallb-webhook-service || true
