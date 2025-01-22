@@ -1,14 +1,10 @@
 # uds-package-metallb
 
-Zarf package containing a standalone version of [MetalLB](https://metallb.org/) to act as a standalone load-balancer or be a pre-req to UDS Core.
+A Zarf Package containing a standalone version of [MetalLB](https://metallb.org/) to act as a standalone load-balancer or be a pre-req to UDS Core.
 
 ## Prerequisites
 
-- Zarf is installed locally with a minimum version of [v0.27.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.27.1)
-- (Optional): A working Kubernetes cluster on v1.26+ -- e.g k3d, k3s, KinD, etc. (Zarf can be used to deploy a built-in k3s distribution)
-- Working kube context (kubectl get nodes <-- this command works)
-- Zarf State and Registry initialized and operational in your cluster (Git is not required by this package)
-- No other Service LoadBalancer implementations are installed in the cluster (e.g. K3s's ServiceLB, another MetalLB, etc)
+This package requires a Zarf-initialized kubernetes cluster to be installed.  This repo uses UDS to create a K3d cluster and initialize it via a bundle.
 
 ## Using
 
@@ -44,28 +40,11 @@ $ zarf package deploy oci://ghcr.io/defenseunicorns/packages/metallb:<version> \
     --confirm
 ```
 
-> Notes:
+> [!NOTE]
+>   - This package can be used inside of bundles (see `bundle/`)
 >   - The IP addresses used here are placeholders. You can use whatever values you want that work for your environment.
 >   - Package versions can be found [here](https://github.com/defenseunicorns/uds-package-metallb/pkgs/container/packages%2Fmetallb)
 >   - If you also want a 4th default IPAddressPool you can additionally set the `IP_ADDRESS_POOL` variable too. It should be an IP range, not a single address unlike the other variables which are single address. Ranges can be specified in either CIDR notation or "StartAddress-EndAddress" notation.
-
-## Contributing
-
-### Create Package
-
-Create this package by cloning down the repo and running the following in the root of the repo:
-
-```shell
-$ zarf package create .
-```
-
-### Commit Messages
-
-Because we use the [release-please](https://github.com/googleapis/release-please) bot, commit messages to main must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. This is only a requirement for the `main` branch. Commit messages in PRs can be whatever you want them to be. "Squash" mode must be used when merging a PR, with a commit message that follows the Conventional Commits specification.
-
-### Release Process
-
-This repo uses the [release-please](https://github.com/googleapis/release-please) bot. Release-please will automatically open a PR to update the version of the repo when a commit is merged to `main` that follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. The bot will automatically keep the PR up to date until a human merges it. When that happens the bot will automatically create a new release.
 
 ## Known Issues
 
