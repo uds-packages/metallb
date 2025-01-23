@@ -43,7 +43,7 @@ $ zarf package deploy oci://ghcr.io/defenseunicorns/packages/metallb:<version> \
 > [!NOTE]
 >   - This package can be used inside of bundles (see `bundle/`)
 >   - The IP addresses used here are placeholders. You can use whatever values you want that work for your environment.
->   - Package versions can be found [here](https://github.com/defenseunicorns/uds-package-metallb/pkgs/container/packages%2Fmetallb)
+>   - Package versions can be found [here](https://github.com/uds-packages/metallb/pkgs/container/packages%2Fmetallb)
 >   - If you also want a 4th default IPAddressPool you can additionally set the `IP_ADDRESS_POOL` variable too. It should be an IP range, not a single address unlike the other variables which are single address. Ranges can be specified in either CIDR notation or "StartAddress-EndAddress" notation.
 
 ## Known Issues
