@@ -60,5 +60,6 @@ jobs:
       upgrade-flavors: ${{ needs.check-flavor.outputs.upgrade-flavors }}
       flavor: ${{ matrix.flavor }}
       type: ${{ matrix.type }}
+      options: --set BASE_REPO="ghcr.io/uds-packages"
       runsOn: appstore-4-core-amd64
     secrets: inherit  # Inherits all secrets from the parent workflow.
