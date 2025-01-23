@@ -1,0 +1,7 @@
+# Copyright 2024 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+variables:
+  metallb:
+    # This is the IP address range of the K3d cluster
+    IP_ADDRESS_POOL: 172.18.1.0/24

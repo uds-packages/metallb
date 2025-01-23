@@ -1,0 +1,12 @@
+# Copyright 2025 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+controller:
+  image:
+    repository: cgr.dev/du-uds-defenseunicorns/metallb-controller-fips
+    tag: 0.14.9
+
+speaker:
+  image:
+    repository: cgr.dev/du-uds-defenseunicorns/metallb-speaker-fips
+    tag: 0.14.9

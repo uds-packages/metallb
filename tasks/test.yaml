@@ -1,0 +1,18 @@
+# Copyright 2025 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+tasks:
+  - name: all
+    description: Create and deploy the base and IDAM layers of UDS Core to test that MetalLB lets traffic through
+    actions:
+      - cmd: |
+          # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-base
+          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-base:0.34.1-upstream --confirm
+          # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization
+          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:0.34.1-upstream --confirm
+          if docker run  --network=k3d-uds --add-host sso.uds.dev:172.18.1.1 curlimages/curl:latest curl -L https://sso.uds.dev | grep -q "Account Management"; then
+            echo "Successfully hit Keycloak through MetalLB"
+          else
+            echo "Failed to make a request to Keycloak through MetalLB"
+            exit 1
+          fi

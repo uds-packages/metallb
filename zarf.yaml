@@ -1,11 +1,12 @@
+# Copyright 2025 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
 kind: ZarfPackageConfig
 metadata:
   name: metallb
-  architecture: amd64
-  # This version should stay in sync with the version in the addresspools/Chart.yaml file.
-  # x-release-please-start-version
-  version: "0.1.2"
-  # x-release-please-end
+  description: "A deployment of MetalLB for on-prem clusters running UDS Core"
+  url: https://github.com/metallb/metallb
+  version: "dev"
 
 variables:
   - name: IP_ADDRESS_POOL
@@ -30,55 +31,46 @@ variables:
     prompt: false
 
 components:
-  - name: preflight
+  - name: metallb
     required: true
-    actions:
-      onDeploy:
-        before:
-          # Pass the check if:
-          #   IP_ADDRESS_POOL is set
-          #   OR
-          #   IP_ADDRESS_ADMIN_INGRESSGATEWAY AND IP_ADDRESS_TENANT_INGRESSGATEWAY are set
-          - description: Validating input variables...
-            cmd: |
-              [ -n "$ZARF_VAR_IP_ADDRESS_POOL" ] || { [ -n "$ZARF_VAR_IP_ADDRESS_ADMIN_INGRESSGATEWAY" ] && [ -n "$ZARF_VAR_IP_ADDRESS_TENANT_INGRESSGATEWAY" ]; } || { echo "Invalid input variables. You are required to at least set either IP_ADDRESS_POOL or IP_ADDRESS_ADMIN_INGRESSGATEWAY and IP_ADDRESS_TENANT_INGRESSGATEWAY"; exit 1; }
+    only:
+      flavor: upstream
+    import:
+      path: common
+    charts:
+      - name: metallb
+        valuesFiles:
+          - ./values/upstream-values.yaml
+    images:
+      - quay.io/metallb/controller:v0.14.9
+      - quay.io/metallb/speaker:v0.14.9
 
   - name: metallb
     required: true
-    manifests:
-      - name: metallb
-        kustomizations:
-          - kustomizations/
-    images:
-      # renovate: datasource=docker versioning=semver
-      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.14.5
-      # renovate: datasource=docker versioning=semver
-      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.14.5
-
-  - name: addresspools
-    required: true
+    only:
+      flavor: registry1
+      cluster:
+        architecture: amd64
+    import:
+      path: common
     charts:
-      - name: addresspools
-        # x-release-please-start-version
-        version: "0.1.2"
-        # x-release-please-end
-        namespace: metallb-system
-        localPath: charts/addresspools
-        variables:
-          - name: INTERFACE
-            path: interface
-            description: The network interface of the K8s nodes which MetalLB should use
-          - name: IP_ADDRESS_POOL
-            path: default.ipAddressPoolCIDR
-            description: The pool of IP addresses to use for ingress to the cluster
-          - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
-            path: adminIngress.ipAddressPool
-            description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
-          - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
-            path: passthroughIngress.ipAddressPool
-            description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
-          - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
-            path: tenantIngress.ipAddressPool
-            description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
-        # valuesFiles:
-        #   - values/addresspools-values.yaml
+      - name: metallb
+        valuesFiles:
+          - ./values/registry1-values.yaml
+    images:
+      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.14.9
+      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.14.9
+
+  - name: metallb
+    required: true
+    only:
+      flavor: unicorn
+    import:
+      path: common
+    charts:
+      - name: metallb
+        valuesFiles:
+          - ./values/unicorn-values.yaml
+    images:
+      - cgr.dev/du-uds-defenseunicorns/metallb-controller-fips:0.14.9
+      - cgr.dev/du-uds-defenseunicorns/metallb-speaker-fips:0.14.9
