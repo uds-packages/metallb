@@ -34,7 +34,12 @@ tasks:
     description: Test and validate cluster is deployed with MetalLB
     actions:
       - task: create:test-bundle
+      - cmd: docker network inspect k3d-uds | ./uds zarf tools yq '.[0].IPAM.Config[0].Subnet'
+        setVariables:
+          - name: METALLB_RANGE
       - task: deploy:test-bundle
+        with:
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
       - task: test:all
 
   - name: dev
@@ -42,7 +47,12 @@ tasks:
     actions:
       - task: create-dev-package
       - task: create:test-bundle
+      - cmd: docker network inspect k3d-uds | ./uds zarf tools yq '.[0].IPAM.Config[0].Subnet'
+        setVariables:
+          - name: METALLB_RANGE
       - task: deploy:test-bundle
+        with:
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
 
 # CI will execute the following (via uds-common/.github/workflows/callable-[test|publish].yaml) so they need to be here with these names
 
@@ -58,7 +68,12 @@ tasks:
     actions:
       - task: upgrade:create-latest-tag-bundle
       - task: cluster:create
+      - cmd: docker network inspect k3d-uds | ./uds zarf tools yq '.[0].IPAM.Config[0].Subnet'
+        setVariables:
+          - name: METALLB_RANGE
       - task: deploy:test-bundle
+        with:
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
       - task: create-dev-package
       - task: create-deploy-test-bundle
 

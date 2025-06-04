@@ -4,4 +4,4 @@
 variables:
   metallb:
     # This is the IP address range of the K3d cluster
-    IP_ADDRESS_POOL: 172.18.1.0/24
+    # IP_ADDRESS_POOL: 172.21.1.0/24
