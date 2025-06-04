@@ -3,10 +3,10 @@
 
 controller:
   image:
-    repository: cgr.dev/du-uds-defenseunicorns/metallb-controller-fips
-    tag: 0.14.9
+    repository: registry1.dso.mil/ironbank/opensource/metallb/controller
+    tag: v0.14.9
 
 speaker:
   image:
-    repository: cgr.dev/du-uds-defenseunicorns/metallb-speaker-fips
-    tag: 0.14.9
+    repository: registry1.dso.mil/ironbank/opensource/metallb/speaker
+    tag: v0.14.9

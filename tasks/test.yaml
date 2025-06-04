@@ -10,7 +10,8 @@ tasks:
           ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-base:0.34.1-upstream --confirm
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization
           ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:0.34.1-upstream --confirm
-          if docker run  --network=k3d-uds --add-host sso.uds.dev:172.18.1.1 curlimages/curl:latest curl -L https://sso.uds.dev | grep -q "Account Management"; then
+          TENANT_IP=$(kubectl get svc tenant-ingressgateway -n istio-tenant-gateway -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          if docker run  --network=k3d-uds --add-host "sso.uds.dev:${TENANT_IP}" curlimages/curl:latest curl -L https://sso.uds.dev | grep -q "Account Management"; then
             echo "Successfully hit Keycloak through MetalLB"
           else
             echo "Failed to make a request to Keycloak through MetalLB"

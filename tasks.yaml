@@ -4,16 +4,16 @@
 includes:
   - test: ./tasks/test.yaml
   - cluster: ./tasks/cluster.yaml
-  - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/create.yaml
-  - publish: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/publish.yaml
-  - lint: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/lint.yaml
-  - pull: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/pull.yaml
-  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/deploy.yaml
-  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/setup.yaml
-  - actions: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/actions.yaml
-  - badge: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/badge.yaml
-  - upgrade: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/upgrade.yaml
-  - compliance: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.7.4/tasks/compliance.yaml
+  - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/create.yaml
+  - publish: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/publish.yaml
+  - lint: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/lint.yaml
+  - pull: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/pull.yaml
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/deploy.yaml
+  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/setup.yaml
+  - actions: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/actions.yaml
+  - badge: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/badge.yaml
+  - upgrade: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/upgrade.yaml
+  - compliance: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.15.0/tasks/compliance.yaml
 
 tasks:
   - name: default
@@ -34,7 +34,14 @@ tasks:
     description: Test and validate cluster is deployed with MetalLB
     actions:
       - task: create:test-bundle
+      - cmd: |
+          BASE_IP=$(./uds zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.240-${BASE_IP}.250"
+        setVariables:
+          - name: METALLB_RANGE
       - task: deploy:test-bundle
+        with:
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
       - task: test:all
 
   - name: dev
@@ -42,7 +49,14 @@ tasks:
     actions:
       - task: create-dev-package
       - task: create:test-bundle
+      - cmd: |
+          BASE_IP=$(./zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.240-${BASE_IP}.250"
+        setVariables:
+          - name: METALLB_RANGE
       - task: deploy:test-bundle
+        with:
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
 
 # CI will execute the following (via uds-common/.github/workflows/callable-[test|publish].yaml) so they need to be here with these names
 
@@ -58,7 +72,14 @@ tasks:
     actions:
       - task: upgrade:create-latest-tag-bundle
       - task: cluster:create
+      - cmd: |
+          BASE_IP=$(./zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.240-${BASE_IP}.250"
+        setVariables:
+          - name: METALLB_RANGE
       - task: deploy:test-bundle
+        with:
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
       - task: create-dev-package
       - task: create-deploy-test-bundle
 
