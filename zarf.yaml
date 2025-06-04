@@ -72,5 +72,5 @@ components:
         valuesFiles:
           - ./values/unicorn-values.yaml
     images:
-      - cgr.dev/du-uds-defenseunicorns/metallb-controller-fips:0.14.9
-      - cgr.dev/du-uds-defenseunicorns/metallb-speaker-fips:0.14.9
+      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.14.9
+      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.14.9
