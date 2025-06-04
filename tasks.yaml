@@ -34,7 +34,9 @@ tasks:
     description: Test and validate cluster is deployed with MetalLB
     actions:
       - task: create:test-bundle
-      - cmd: docker network inspect k3d-uds | ./uds zarf tools yq '.[0].IPAM.Config[0].Subnet'
+      - cmd: |
+          BASE_IP=$(./zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.240-${BASE_IP}.250"
         setVariables:
           - name: METALLB_RANGE
       - task: deploy:test-bundle
@@ -47,7 +49,9 @@ tasks:
     actions:
       - task: create-dev-package
       - task: create:test-bundle
-      - cmd: docker network inspect k3d-uds | ./uds zarf tools yq '.[0].IPAM.Config[0].Subnet'
+      - cmd: |
+          BASE_IP=$(./zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.240-${BASE_IP}.250"
         setVariables:
           - name: METALLB_RANGE
       - task: deploy:test-bundle
@@ -68,7 +72,9 @@ tasks:
     actions:
       - task: upgrade:create-latest-tag-bundle
       - task: cluster:create
-      - cmd: docker network inspect k3d-uds | ./uds zarf tools yq '.[0].IPAM.Config[0].Subnet'
+      - cmd: |
+          BASE_IP=$(./zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.240-${BASE_IP}.250"
         setVariables:
           - name: METALLB_RANGE
       - task: deploy:test-bundle
