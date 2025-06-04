@@ -4,9 +4,9 @@
 controller:
   image:
     repository: registry1.dso.mil/ironbank/opensource/metallb/controller
-    tag: v0.14.9
+    tag: v0.15.2
 
 speaker:
   image:
     repository: registry1.dso.mil/ironbank/opensource/metallb/speaker
-    tag: v0.14.9
+    tag: v0.15.2
