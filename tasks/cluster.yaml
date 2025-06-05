@@ -15,4 +15,5 @@ tasks:
               --k3s-arg "--disable=traefik@server:*" \
               --k3s-arg "--disable=metrics-server@server:*" \
               --k3s-arg "--disable=servicelb@server:*" \
+              --image rancher/k3s:v1.32.5-k3s1
               uds
