@@ -1,0 +1,17 @@
+apiVersion: uds.dev/v1alpha1
+kind: Exemption
+metadata:
+  name: metallb
+  namespace: uds-policy-exemptions
+spec:
+  exemptions:
+    - policies:
+        - RestrictHostPorts
+        - DropAllCapabilities
+        - RestrictHostPorts
+        - RequireNonRootUser
+        - DisallowHostNamespaces
+        - RestrictCapabilities
+      matcher:
+        namespace: metallb-system
+        name: "^metallb-speaker.*"
