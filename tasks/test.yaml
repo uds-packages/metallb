@@ -7,7 +7,7 @@ tasks:
     actions:
       - cmd: |
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-base
-          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-base:0.43.0-upstream --confirm
+          zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-base:0.43.0-upstream --confirm
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization
           ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:0.43.0-upstream --confirm
           TENANT_IP=$(kubectl get svc tenant-ingressgateway -n istio-tenant-gateway -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
