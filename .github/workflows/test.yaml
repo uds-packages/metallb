@@ -63,4 +63,5 @@ jobs:
       type: ${{ matrix.type }}
       options: --set BASE_REPO="ghcr.io/uds-packages"
       runsOn: appstore-4-core-amd64
+      udsCliVersion: 0.27.6
     secrets: inherit  # Inherits all secrets from the parent workflow.
