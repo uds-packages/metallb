@@ -1,16 +1,62 @@
 # Copyright 2025 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
+includes:
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.16.0/tasks/deploy.yaml
+
 tasks:
   - name: all
-    description: Create and deploy the base and IDAM layers of UDS Core to test that MetalLB lets traffic through
+    actions:
+      - task: deploy-uds-core
+      - task: deploy-metallb-exemption
+      - task: restart-metallb-speaker
+      - task: deploy-uds-core-identity-authorization
+      - task: test-metallb-lb
+
+  - name: deploy-uds-core
+    description: Deploy UDS Core base
     actions:
       - cmd: |
-          # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-base
+          # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-base versioning=docker
           ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-base:0.43.0-upstream --confirm
-          # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization
+
+  - name: deploy-metallb-exemption
+    description: Deploy MetalLB with the optional exemption component
+    actions:
+      - cmd: |
+          BASE_IP=$(./uds zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.240-${BASE_IP}.250"
+        setVariables:
+          - name: METALLB_RANGE
+      - task: deploy:package
+        with:
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE} --components metallb-uds-exemption"
+
+  - name: restart-metallb-speaker
+    description: Restart the MetalLB speaker to ensure the exemption is applied
+    actions:
+      - cmd: |
+          ./uds zarf tools kubectl rollout restart daemonset/metallb-speaker -n metallb-system
+      - wait:
+          cluster:
+            kind: daemonset
+            name: metallb-speaker
+            namespace: metallb-system
+            condition: "'{.status.numberReady}'=1"
+
+  - name: deploy-uds-core-identity-authorization
+    description: Deploy UDS Core Identity and Authorization so we have an endpoint to test MetalLB
+    actions:
+      - cmd: |
+          # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization versioning=docker
           ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:0.43.0-upstream --confirm
+
+  - name: test-metallb-lb
+    description: Test that MetalLB is functioning by checking the Keycloak endpoint
+    actions:
+      - cmd: |
           TENANT_IP=$(kubectl get svc tenant-ingressgateway -n istio-tenant-gateway -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
           if docker run  --network=k3d-uds --add-host "sso.uds.dev:${TENANT_IP}" curlimages/curl:latest curl -L https://sso.uds.dev | grep -q "My Account"; then
             echo "Successfully hit Keycloak through MetalLB"
           else

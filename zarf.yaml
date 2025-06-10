@@ -31,6 +31,14 @@ variables:
     prompt: false
 
 components:
+  - name: metallb-uds-exemption
+    description: Optional component that is needed on redeploy of metallb to ensure that the speaker pod is allowed to schedule
+    required: false
+    manifests:
+      - name: metallb-uds-exemption
+        namespace: uds-policy-exemptions
+        files:
+          - ./manifests/exemption.yaml
   - name: metallb
     required: true
     only:
