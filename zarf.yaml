@@ -39,6 +39,7 @@ components:
         namespace: uds-policy-exemptions
         files:
           - ./manifests/exemption.yaml
+
   - name: metallb
     required: true
     only:
