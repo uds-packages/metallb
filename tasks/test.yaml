@@ -30,7 +30,7 @@ tasks:
           - name: METALLB_RANGE
       - task: deploy:package
         with:
-          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE} --components metallb-uds-exemption"
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
 
   - name: restart-metallb-speaker
     description: Restart the MetalLB speaker to ensure the exemption is applied

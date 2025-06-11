@@ -1,6 +1,7 @@
 # Copyright 2025 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
+{{- if .Capabilities.APIVersions.Has "uds.dev/v1alpha1" }}
 apiVersion: uds.dev/v1alpha1
 kind: Exemption
 metadata:
@@ -18,3 +19,4 @@ spec:
       matcher:
         namespace: metallb-system
         name: "^metallb-speaker.*"
+{{- end }}

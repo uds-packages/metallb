@@ -4,6 +4,6 @@ MetalLB in this package is configured through [MetalLB UDS package](https://gith
 
 ## UDS Exemption Optional Component
 
-Since MetalLB needs to be deployed before UDS Core, and it requires some rootful/privileged permissions to function, there is an optional zarf component that contains a UDS Exemption for the speaker pod - `metallb-uds-exemption`.
+Since MetalLB needs to be deployed before UDS Core, and it requires some rootful/privileged permissions to function, there is a zarf component that contains a UDS Exemption for the speaker pod - `metallb-uds-exemption`.
 
-On initial deployment this component cannot be deployed since the UDS Exemption CRD is not installed yet. However, it is required for every subsequent deployment of MetalLB since without it UDS Core will not allow the speaker pod to schedule.
+On initial deployment this exemption cannot be deployed since the UDS Exemption CRD is not installed yet. However, once the cluster has the uds-exemption CRD installed, the exemption will be deployed automatically.
