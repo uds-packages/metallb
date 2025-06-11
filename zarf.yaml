@@ -31,6 +31,15 @@ variables:
     prompt: false
 
 components:
+  - name: metallb-uds-exemption
+    description: Ensure that the speaker pod is allowed to schedule
+    required: true
+    charts:
+      - name: exemption
+        namespace: uds-policy-exemptions
+        localPath: ./charts/exemption
+        version: 0.1.0
+
   - name: metallb
     required: true
     only:
@@ -42,8 +51,8 @@ components:
         valuesFiles:
           - ./values/upstream-values.yaml
     images:
-      - quay.io/metallb/controller:v0.14.9
-      - quay.io/metallb/speaker:v0.14.9
+      - quay.io/metallb/controller:v0.15.2
+      - quay.io/metallb/speaker:v0.15.2
 
   - name: metallb
     required: true
@@ -58,8 +67,8 @@ components:
         valuesFiles:
           - ./values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.14.9
-      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.14.9
+      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.2
+      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.2
 
   - name: metallb
     required: true
@@ -72,5 +81,5 @@ components:
         valuesFiles:
           - ./values/unicorn-values.yaml
     images:
-      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.14.9
-      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.14.9
+      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.2
+      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.2
