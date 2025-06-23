@@ -19,17 +19,21 @@ variables:
     default: ""
     prompt: false
   - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
+  - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
     description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
     default: ""
     prompt: false
+  - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
   - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
     description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
     default: ""
     prompt: false
   - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
+  - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
     description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
     default: ""
     prompt: false
+  - name: INTERFACE
   - name: INTERFACE
     description: When using this package in concert with UDS Core, the network interface of the K8s nodes which MetalLB should use
     default: ""
@@ -71,20 +75,6 @@ components:
       - name: metallb
         valuesFiles:
           - ./values/registry1-values.yaml
-    images:
-      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.2
-      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.2
-
-  - name: metallb
-    required: true
-    only:
-      flavor: unicorn
-    import:
-      path: common
-    charts:
-      - name: metallb
-        valuesFiles:
-          - ./values/unicorn-values.yaml
     images:
       - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.2
       - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.2
