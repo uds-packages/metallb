@@ -4,10 +4,10 @@
 flavors:
   - name: upstream
     # renovate-uds: datasource=docker depName=quay.io/metallb/controller extractVersion=^v(?<version>\d+\.\d+\.\d+)$
-    version: 0.14.9-uds.0
+    version: 0.15.2-uds.2
   - name: registry1
     # renovate-uds: datasource=docker depName=registry1.dso.mil/ironbank/opensource/metallb/controller extractVersion=^v(?<version>\d+\.\d+\.\d+)$
-    version: 0.14.9-uds.0
+    version: 0.15.2-uds.2
   - name: unicorn
-    # renovate-uds: datasource=docker depName=cgr.dev/du-uds-defenseunicorns/metallb-controller-fips
-    version: 0.14.9-uds.0
+    # renovate-uds: datasource=docker depName=registry1.dso.mil/ironbank/opensource/metallb/controller extractVersion=^v(?<version>\d+\.\d+\.\d+)$
+    version: 0.15.2-uds.2

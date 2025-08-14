@@ -4,9 +4,14 @@
 kind: ZarfPackageConfig
 metadata:
   name: metallb
-  description: "A deployment of MetalLB for on-prem clusters running UDS Core"
-  url: https://github.com/metallb/metallb
+  description: "MetalLB is a load-balancer implementation for bare metal Kubernetes clusters, using standard routing protocols."
   version: "dev"
+  annotations:
+    dev.uds.title: MetalLB
+    dev.uds.tagline: A Load Balancer for Bare Metal Kubernetes Clusters
+    dev.uds.categories: Network, Load Balancing, Kubernetes (K8s)
+    dev.uds.keywords: Load Balancing, Bare Metal, Kubernetes, Ingress, Routing
+    dev.uds.icon: data:image/png;base64,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
 
 variables:
   - name: IP_ADDRESS_POOL
@@ -31,6 +36,15 @@ variables:
     prompt: false
 
 components:
+  - name: metallb-uds-exemption
+    description: Ensure that the speaker pod is allowed to schedule
+    required: true
+    charts:
+      - name: exemption
+        namespace: uds-policy-exemptions
+        localPath: ./charts/exemption
+        version: 0.1.0
+
   - name: metallb
     required: true
     only:
@@ -42,8 +56,8 @@ components:
         valuesFiles:
           - ./values/upstream-values.yaml
     images:
-      - quay.io/metallb/controller:v0.14.9
-      - quay.io/metallb/speaker:v0.14.9
+      - quay.io/metallb/controller:v0.15.2
+      - quay.io/metallb/speaker:v0.15.2
 
   - name: metallb
     required: true
@@ -58,8 +72,8 @@ components:
         valuesFiles:
           - ./values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.14.9
-      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.14.9
+      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.2
+      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.2
 
   - name: metallb
     required: true
@@ -72,5 +86,5 @@ components:
         valuesFiles:
           - ./values/unicorn-values.yaml
     images:
-      - cgr.dev/du-uds-defenseunicorns/metallb-controller-fips:0.14.9
-      - cgr.dev/du-uds-defenseunicorns/metallb-speaker-fips:0.14.9
+      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.2
+      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.2
