@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 includes:
-  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.16.4/tasks/deploy.yaml
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.20.3/tasks/deploy.yaml
 
 tasks:
   - name: all
