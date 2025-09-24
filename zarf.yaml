@@ -86,5 +86,5 @@ components:
         valuesFiles:
           - ./values/unicorn-values.yaml
     images:
-      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.2
-      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.2
+      - quay.io/rfcurated/metallb/controller:0.15.2-jammy-scratch-fips-rfcurated
+      - quay.io/rfcurated/metallb/speaker:0.15.2-jammy-scratch-fips-rfcurated
