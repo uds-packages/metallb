@@ -35,8 +35,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        # type: [install, upgrade]
-        type: [install]
+        type: [install, upgrade]
         flavor: [upstream, unicorn, registry1]
     with:
       upgrade-flavors: ${{ needs.check-flavor.outputs.upgrade-flavors }}

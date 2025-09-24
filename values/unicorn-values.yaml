@@ -3,10 +3,10 @@
 
 controller:
   image:
-    repository: registry1.dso.mil/ironbank/opensource/metallb/controller
-    tag: v0.15.2
+    repository: quay.io/rfcurated/metallb/controller
+    tag: 0.15.2-jammy-scratch-fips-rfcurated
 
 speaker:
   image:
-    repository: registry1.dso.mil/ironbank/opensource/metallb/speaker
-    tag: v0.15.2
+    repository: quay.io/rfcurated/metallb/speaker
+    tag: 0.15.2-jammy-scratch-fips-rfcurated
