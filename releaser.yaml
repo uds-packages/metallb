@@ -10,4 +10,4 @@ flavors:
     version: 0.15.2-uds.3
   - name: unicorn
     # renovate-uds: datasource=docker depName=registry1.dso.mil/ironbank/opensource/metallb/controller extractVersion=^v(?<version>\d+\.\d+\.\d+)$
-    version: 0.15.2-uds.3
+    version: 0.15.2-uds.4
