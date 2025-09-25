@@ -8,4 +8,4 @@ Since MetalLB needs to be deployed before UDS Core, and it requires some rootful
 
 On initial deployment this exemption cannot be deployed since the UDS Exemption CRD is not installed yet. However, once the cluster has the uds-exemption CRD installed, the exemption will be deployed automatically.
 
-Additionally, if users apply the exemption as part of another chart or Zarf package, the exemption in this package can be disabled entirely by setting `exemptionEnabled` to `"false"` in the `exemption` chart.
+Additionally, if users apply the exemption as part of another chart or Zarf package, the exemption in this package can be disabled entirely by setting `exemptionEnabled` to `false` in the `exemption` chart.
