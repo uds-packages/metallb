@@ -1,2 +1,5 @@
 # Copyright 2025 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+# Use the UDS Exemption defined in this chart, disable when deploying MetalLB as a prereq to UDS Core
+exemptionEnabled: true

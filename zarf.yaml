@@ -34,6 +34,10 @@ variables:
     description: When using this package in concert with UDS Core, the network interface of the K8s nodes which MetalLB should use
     default: ""
     prompt: false
+  - name: SKIP_INPUT_VALIDATION
+    description: |
+      Skip input validation, useful when configuring MetalLB with Helm overrides as opposed to Zarf vars
+    default: "false"
 
 components:
   - name: metallb-uds-exemption
