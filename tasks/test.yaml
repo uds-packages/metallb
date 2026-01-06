@@ -18,7 +18,7 @@ tasks:
     actions:
       - cmd: |
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-base versioning=docker
-          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-base:0.57.0-upstream --confirm
+          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-base:0.58.1-upstream --confirm
 
   - name: deploy-metallb-exemption
     description: Deploy MetalLB with the optional exemption component
@@ -49,7 +49,7 @@ tasks:
     actions:
       - cmd: |
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization versioning=docker
-          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:0.57.0-upstream --confirm
+          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:0.58.1-upstream --confirm
 
   - name: test-metallb-lb
     description: Test that MetalLB is functioning by checking the Keycloak endpoint
