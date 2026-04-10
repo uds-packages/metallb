@@ -53,12 +53,12 @@ components:
       path: common
     charts:
       - name: metallb
+        serverSideApply: "false"
         valuesFiles:
           - ./values/upstream-values.yaml
     images:
       - quay.io/metallb/controller:v0.15.3
       - quay.io/metallb/speaker:v0.15.3
-    serverSideApply: "false"
 
   - name: metallb
     required: true
@@ -70,12 +70,12 @@ components:
       path: common
     charts:
       - name: metallb
+        serverSideApply: "false"
         valuesFiles:
           - ./values/registry1-values.yaml
     images:
       - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.3
       - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.3
-    serverSideApply: "false"
 
   - name: metallb
     required: true
@@ -85,9 +85,9 @@ components:
       path: common
     charts:
       - name: metallb
+        serverSideApply: "false"
         valuesFiles:
           - ./values/unicorn-values.yaml
     images:
       - quay.io/rfcurated/metallb/controller:0.15.2-jammy-scratch-fips-rfcurated
       - quay.io/rfcurated/metallb/speaker:0.15.2-jammy-scratch-fips-rfcurated
-    serverSideApply: "false"
