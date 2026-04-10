@@ -41,6 +41,7 @@ components:
     required: true
     charts:
       - name: exemption
+        serverSideApply: "false"
         namespace: uds-policy-exemptions
         localPath: ./charts/exemption
         version: 0.1.0
