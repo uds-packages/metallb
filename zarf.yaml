@@ -41,6 +41,7 @@ components:
     required: true
     charts:
       - name: exemption
+        serverSideApply: "false"
         namespace: uds-policy-exemptions
         localPath: ./charts/exemption
         version: 0.1.0
@@ -53,6 +54,7 @@ components:
       path: common
     charts:
       - name: metallb
+        serverSideApply: "false"
         valuesFiles:
           - ./values/upstream-values.yaml
     images:
@@ -69,6 +71,7 @@ components:
       path: common
     charts:
       - name: metallb
+        serverSideApply: "false"
         valuesFiles:
           - ./values/registry1-values.yaml
     images:
@@ -83,6 +86,7 @@ components:
       path: common
     charts:
       - name: metallb
+        serverSideApply: "false"
         valuesFiles:
           - ./values/unicorn-values.yaml
     images:

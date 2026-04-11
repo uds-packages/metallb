@@ -24,13 +24,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: test-flavor
-        uses: defenseunicorns/uds-common/.github/actions/test-flavor@0cfdcaa2dbe7a539dec471edbb081c88b06fe8ec # v1.24.2
+        uses: defenseunicorns/uds-common/.github/actions/test-flavor@301f13ac83472fbb9f393ba3898c91ed945e02e9 # v1.24.4
         id: test-flavor
     outputs:
       upgrade-flavors: ${{ steps.test-flavor.outputs.upgrade-flavors }}
   validate:
     needs: check-flavor
-    uses: defenseunicorns/uds-common/.github/workflows/callable-test.yaml@0cfdcaa2dbe7a539dec471edbb081c88b06fe8ec # v1.24.2
+    uses: defenseunicorns/uds-common/.github/workflows/callable-test.yaml@301f13ac83472fbb9f393ba3898c91ed945e02e9 # v1.24.4
     secrets: inherit # Inherits all secrets from the parent workflow.
     strategy:
       fail-fast: true

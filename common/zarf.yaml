@@ -12,12 +12,14 @@ components:
     required: true
     charts:
       - name: metallb
+        serverSideApply: "false"
         namespace: metallb-system
         url: https://metallb.github.io/metallb
         version: 0.15.3
         valuesFiles:
           - "../values/common-values.yaml"
       - name: addresspools
+        serverSideApply: "false"
         version: "0.1.2"
         namespace: metallb-system
         localPath: ../charts/addresspools
