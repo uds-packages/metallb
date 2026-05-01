@@ -1,0 +1,19 @@
+# Copyright 2026 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: passthrough-test-config
+data:
+  default.conf: |
+    server {
+      listen 8443 ssl;
+      ssl_certificate     /etc/nginx/tls/tls.crt;
+      ssl_certificate_key /etc/nginx/tls/tls.key;
+
+      location / {
+        default_type text/plain;
+        return 200 "passthrough ok\n";
+      }
+    }

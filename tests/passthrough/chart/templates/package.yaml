@@ -1,0 +1,17 @@
+# Copyright 2026 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+apiVersion: uds.dev/v1alpha1
+kind: Package
+metadata:
+  name: passthrough-test
+spec:
+  network:
+    expose:
+      - service: passthrough-test
+        selector:
+          app: passthrough-test
+        host: {{ .Values.host }}
+        gateway: passthrough
+        port: 443
+        targetPort: 8443

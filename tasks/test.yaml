@@ -1,4 +1,4 @@
-# Copyright 2025 Defense Unicorns
+# Copyright 2025-2026 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 includes:
@@ -7,30 +7,10 @@ includes:
 tasks:
   - name: all
     actions:
-      - task: deploy-uds-core
-      - task: deploy-metallb-exemption
       - task: restart-metallb-speaker
       - task: deploy-uds-core-identity-authorization
+      - task: deploy-passthrough-test
       - task: test-metallb-lb
-
-  - name: deploy-uds-core
-    description: Deploy UDS Core base
-    actions:
-      - cmd: |
-          # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-base versioning=docker
-          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-base:1.3.0-upstream --confirm
-
-  - name: deploy-metallb-exemption
-    description: Deploy MetalLB with the optional exemption component
-    actions:
-      - cmd: |
-          BASE_IP=$(./uds zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
-          echo "${BASE_IP}.240-${BASE_IP}.250"
-        setVariables:
-          - name: METALLB_RANGE
-      - task: deploy:package
-        with:
-          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
 
   - name: restart-metallb-speaker
     description: Restart the MetalLB speaker to ensure the exemption is applied
@@ -51,15 +31,43 @@ tasks:
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization versioning=docker
           ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:1.3.0-upstream --confirm
 
-  - name: test-metallb-lb
-    description: Test that MetalLB is functioning by checking the Keycloak endpoint
+  - name: deploy-passthrough-test
+    description: Build and deploy the local passthrough-test package (backend behind the passthrough gateway)
     actions:
       - cmd: |
+          ./uds zarf package create tests/passthrough --skip-sbom --confirm -o tests/passthrough
+          ./uds zarf package deploy tests/passthrough/zarf-package-passthrough-test-*.tar.zst --confirm
+
+  - name: test-metallb-lb
+    description: Validate each MetalLB pool is allocating + L2-advertising
+    actions:
+      - description: tenant pool — Keycloak public endpoint reachable via tenant gateway IP
+        cmd: |
           TENANT_IP=$(kubectl get svc tenant-ingressgateway -n istio-tenant-gateway -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-          if docker run  --network=k3d-uds --add-host "sso.uds.dev:${TENANT_IP}" curlimages/curl:latest curl -L https://sso.uds.dev | grep -q "My Account"; then
-            echo "Successfully hit Keycloak through MetalLB"
+          if docker run --network=k3d-uds --add-host "sso.uds.dev:${TENANT_IP}" curlimages/curl:latest curl -skL https://sso.uds.dev | grep -q "My Account"; then
+            echo "Successfully hit Keycloak through tenant gateway"
           else
-            echo "Failed to make a request to Keycloak through MetalLB"
+            echo "Failed to hit Keycloak through tenant gateway"
+            exit 1
+          fi
+      - description: admin pool — Keycloak admin endpoint reachable via admin gateway IP
+        cmd: |
+          ADMIN_IP=$(kubectl get svc admin-ingressgateway -n istio-admin-gateway -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+          if docker run --network=k3d-uds --add-host "keycloak.admin.uds.dev:${ADMIN_IP}" curlimages/curl:latest curl -skL https://keycloak.admin.uds.dev | grep -q "Welcome to Keycloak"; then
+            echo "Successfully hit Keycloak through admin gateway"
+          else
+            echo "Failed to hit Keycloak through admin gateway"
+            exit 1
+          fi
+      - description: passthrough pool — nginx endpoint reachable via passthrough gateway IP
+        cmd: |
+          PASSTHROUGH_IP=$(kubectl get svc passthrough-ingressgateway -n istio-passthrough-gateway -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+          if docker run --network=k3d-uds --add-host "passthrough.uds.dev:${PASSTHROUGH_IP}" curlimages/curl:latest curl -sk --max-time 10 https://passthrough.uds.dev/ | grep -q "passthrough ok"; then
+            echo "Successfully hit passthrough-test through passthrough gateway"
+          else
+            echo "Failed to hit passthrough-test through passthrough gateway"
             exit 1
           fi

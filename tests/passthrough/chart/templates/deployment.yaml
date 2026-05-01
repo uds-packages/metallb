@@ -1,0 +1,43 @@
+# Copyright 2026 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: passthrough-test
+  labels:
+    app: passthrough-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: passthrough-test
+  template:
+    metadata:
+      labels:
+        app: passthrough-test
+    spec:
+      containers:
+        - name: nginx
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: tls
+              containerPort: 8443
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/conf.d
+            - name: tls
+              mountPath: /etc/nginx/tls
+              readOnly: true
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 2
+            periodSeconds: 5
+      volumes:
+        - name: config
+          configMap:
+            name: passthrough-test-config
+        - name: tls
+          secret:
+            secretName: passthrough-test-tls
