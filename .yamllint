@@ -2,9 +2,10 @@ yaml-files:
   - '**/*.y*ml'
   - '.yamllint'
 
-# Ignore files from upstream
+# Ignore Helm chart templates (Go template syntax is not valid YAML)
 ignore:
   - '**/charts/**/templates**'
+  - '**/chart/templates**'
 
 rules:
   anchors: enable
