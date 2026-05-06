@@ -36,7 +36,7 @@ tasks:
     actions:
       - cmd: |
           ./uds zarf package create tests/passthrough --skip-sbom --confirm -o tests/passthrough
-          ./uds zarf package deploy tests/passthrough/zarf-package-passthrough-test-*.tar.zst --confirm
+          ./uds zarf package deploy tests/passthrough/zarf-package-passthrough-test-${UDS_ARCH}-dev.tar.zst --confirm
 
   - name: test-metallb-lb
     description: Validate each MetalLB pool is allocating + L2-advertising
