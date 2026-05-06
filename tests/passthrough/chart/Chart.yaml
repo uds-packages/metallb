@@ -1,0 +1,9 @@
+# Copyright 2026 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+apiVersion: v2
+name: passthrough-test
+description: Backend nginx exposed via the istio passthrough gateway, used to validate the MetalLB passthrough address pool end-to-end
+type: application
+version: 0.1.0
+appVersion: "1.30.0"

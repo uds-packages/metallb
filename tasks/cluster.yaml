@@ -1,4 +1,4 @@
-# Copyright 2025 Defense Unicorns
+# Copyright 2025-2026 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 tasks:
@@ -7,6 +7,8 @@ tasks:
     actions:
       - description: Create a K3d cluster to install metallb on
         cmd: |
+          # renovate: datasource=docker depName=rancher/k3s versioning=docker
+          K3S_IMAGE=rancher/k3s:v1.35.4-k3s1
           k3d cluster delete uds
           k3d cluster create \
             -p "80:80@server:*" \
@@ -15,5 +17,5 @@ tasks:
             --k3s-arg "--disable=traefik@server:*" \
             --k3s-arg "--disable=metrics-server@server:*" \
             --k3s-arg "--disable=servicelb@server:*" \
-            --image rancher/k3s:v1.32.5-k3s1 \
+            --image "$K3S_IMAGE" \
             uds

@@ -1,4 +1,4 @@
-# Copyright 2024 Defense Unicorns
+# Copyright 2024-2026 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 includes:
@@ -39,9 +39,14 @@ tasks:
           echo "${BASE_IP}.240-${BASE_IP}.250"
         setVariables:
           - name: METALLB_RANGE
+      - cmd: |
+          BASE_IP=$(./uds zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.239"
+        setVariables:
+          - name: PASSTHROUGH_IP
       - task: deploy:test-bundle
         with:
-          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE} --set IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY=${PASSTHROUGH_IP}"
       - task: test:all
 
   - name: dev
@@ -54,9 +59,14 @@ tasks:
           echo "${BASE_IP}.240-${BASE_IP}.250"
         setVariables:
           - name: METALLB_RANGE
+      - cmd: |
+          BASE_IP=$(./zarf tools kubectl get nodes -o=jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}' | cut -d'.' -f1-3)
+          echo "${BASE_IP}.239"
+        setVariables:
+          - name: PASSTHROUGH_IP
       - task: deploy:test-bundle
         with:
-          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
+          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE} --set IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY=${PASSTHROUGH_IP}"
 
 # CI will execute the following (via uds-common/.github/workflows/callable-[test|publish].yaml) so they need to be here with these names
 

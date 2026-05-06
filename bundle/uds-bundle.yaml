@@ -1,4 +1,4 @@
-# Copyright 2024 Defense Unicorns
+# Copyright 2024-2026 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 kind: UDSBundle
@@ -12,6 +12,16 @@ packages:
     repository: ghcr.io/zarf-dev/packages/init
     ref: v0.75.1
 
+  - name: core-crds
+    repository: ghcr.io/defenseunicorns/packages/uds/core-crds
+    ref: 1.3.0-upstream
+
   - name: metallb
     path: ../
     ref: dev
+
+  - name: core-base
+    repository: ghcr.io/defenseunicorns/packages/uds/core-base
+    ref: 1.3.0-upstream
+    optionalComponents:
+      - istio-passthrough-gateway
