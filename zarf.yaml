@@ -88,5 +88,5 @@ components:
         valuesFiles:
           - ./values/unicorn-values.yaml
     images:
-      - quay.io/rfcurated/metallb/controller:0.15.2-jammy-scratch-fips-rfcurated
-      - quay.io/rfcurated/metallb/speaker:0.15.2-jammy-scratch-fips-rfcurated
+      - cgr.dev/defenseunicorns.com/metallb-controller:0.15.3
+      - cgr.dev/defenseunicorns.com/metallb-speaker:0.15.3
