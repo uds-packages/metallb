@@ -3,10 +3,10 @@
 
 controller:
   image:
-    repository: quay.io/rfcurated/metallb/controller
-    tag: 0.15.2-jammy-scratch-fips-rfcurated
+    repository: cgr.dev/defenseunicorns.com/metallb-controller
+    tag: 0.15.3
 
 speaker:
   image:
-    repository: quay.io/rfcurated/metallb/speaker
-    tag: 0.15.2-jammy-scratch-fips-rfcurated
+    repository: cgr.dev/defenseunicorns.com/metallb-speaker
+    tag: 0.15.3
