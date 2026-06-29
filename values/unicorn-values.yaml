@@ -4,9 +4,9 @@
 controller:
   image:
     repository: cgr.dev/defenseunicorns.com/metallb-controller
-    tag: 0.15.3
+    tag: v0.16.1
 
 speaker:
   image:
     repository: cgr.dev/defenseunicorns.com/metallb-speaker
-    tag: 0.15.3
+    tag: v0.16.1

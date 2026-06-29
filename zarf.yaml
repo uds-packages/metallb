@@ -58,8 +58,8 @@ components:
         valuesFiles:
           - ./values/upstream-values.yaml
     images:
-      - quay.io/metallb/controller:v0.15.3
-      - quay.io/metallb/speaker:v0.15.3
+      - quay.io/metallb/controller:v0.16.1
+      - quay.io/metallb/speaker:v0.16.1
 
   - name: metallb
     required: true
@@ -73,8 +73,8 @@ components:
         valuesFiles:
           - ./values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.15.3
-      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.15.3
+      - registry1.dso.mil/ironbank/opensource/metallb/controller:v0.16.1
+      - registry1.dso.mil/ironbank/opensource/metallb/speaker:v0.16.1
 
   - name: metallb
     required: true
@@ -88,5 +88,5 @@ components:
         valuesFiles:
           - ./values/unicorn-values.yaml
     images:
-      - cgr.dev/defenseunicorns.com/metallb-controller:0.15.3
-      - cgr.dev/defenseunicorns.com/metallb-speaker:0.15.3
+      - cgr.dev/defenseunicorns.com/metallb-controller:v0.16.1
+      - cgr.dev/defenseunicorns.com/metallb-speaker:v0.16.1
