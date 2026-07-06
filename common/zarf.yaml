@@ -15,7 +15,7 @@ components:
         serverSideApply: "false"
         namespace: metallb-system
         url: https://metallb.github.io/metallb
-        version: 0.15.3
+        version: 0.16.1
         valuesFiles:
           - "../values/common-values.yaml"
       - name: addresspools

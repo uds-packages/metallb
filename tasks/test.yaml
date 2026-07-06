@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 includes:
-  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.24.8/tasks/deploy.yaml
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.26.1/tasks/deploy.yaml
 
 tasks:
   - name: all
@@ -29,7 +29,7 @@ tasks:
     actions:
       - cmd: |
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization versioning=docker
-          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:1.3.0-upstream --confirm
+          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:1.7.0-upstream --confirm
 
   - name: deploy-passthrough-test
     description: Build and deploy the local passthrough-test package (backend behind the passthrough gateway)

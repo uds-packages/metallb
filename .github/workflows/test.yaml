@@ -22,15 +22,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: test-flavor
-        uses: defenseunicorns/uds-common/.github/actions/test-flavor@99fd276835257a9608656380d1d453356fe7539e # v1.24.8
+        uses: defenseunicorns/uds-common/.github/actions/test-flavor@3a225748bd88edb257a3e827f40b22167fe75412 # v1.26.1
         id: test-flavor
     outputs:
       upgrade-flavors: ${{ steps.test-flavor.outputs.upgrade-flavors }}
   validate:
     needs: check-flavor
-    uses: defenseunicorns/uds-common/.github/workflows/callable-test.yaml@99fd276835257a9608656380d1d453356fe7539e # v1.24.8
+    uses: defenseunicorns/uds-common/.github/workflows/callable-test.yaml@3a225748bd88edb257a3e827f40b22167fe75412 # v1.26.1
     secrets: inherit # Inherits all secrets from the parent workflow.
     strategy:
       fail-fast: true
