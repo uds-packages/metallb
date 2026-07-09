@@ -8,7 +8,7 @@ tasks:
       - description: Create a K3d cluster to install metallb on
         cmd: |
           # renovate: datasource=docker depName=rancher/k3s versioning=docker
-          K3S_IMAGE=rancher/k3s:v1.35.4-k3s1
+          K3S_IMAGE=rancher/k3s:v1.36.2-k3s1
           k3d cluster delete uds
           k3d cluster create \
             -p "80:80@server:*" \

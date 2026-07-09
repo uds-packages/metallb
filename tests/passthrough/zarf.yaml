@@ -16,4 +16,4 @@ components:
         localPath: ./chart
         version: 0.1.0
     images:
-      - nginxinc/nginx-unprivileged:1.30.0-alpine
+      - nginxinc/nginx-unprivileged:1.31.2-alpine
