@@ -10,11 +10,17 @@ metadata:
 spec:
   addresses:
     - {{ .Values.adminIngress.ipAddressPool }}/32
+  {{- if or .Values.adminIngress.namespace .Values.adminIngress.matchLabels }}
   serviceAllocation:
     priority: 50
+    {{- if .Values.adminIngress.namespace }}
     namespaces:
       - {{ .Values.adminIngress.namespace }}
+    {{- end }}
+    {{- if .Values.adminIngress.matchLabels }}
     serviceSelectors:
       - matchLabels:
           {{- toYaml .Values.adminIngress.matchLabels | nindent 10 }}
+    {{- end }}
+  {{- end }}
 {{- end }}

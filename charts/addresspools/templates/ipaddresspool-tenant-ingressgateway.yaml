@@ -10,11 +10,17 @@ metadata:
 spec:
   addresses:
     - {{ .Values.tenantIngress.ipAddressPool }}/32
+  {{- if or .Values.tenantIngress.namespace .Values.tenantIngress.matchLabels }}
   serviceAllocation:
     priority: 50
+    {{- if .Values.tenantIngress.namespace }}
     namespaces:
       - {{ .Values.tenantIngress.namespace }}
+    {{- end }}
+    {{- if .Values.tenantIngress.matchLabels }}
     serviceSelectors:
       - matchLabels:
           {{- toYaml .Values.tenantIngress.matchLabels | nindent 10 }}
+    {{- end }}
+  {{- end }}
 {{- end }}
