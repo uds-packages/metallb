@@ -35,6 +35,11 @@ variables:
     default: ""
     prompt: false
 
+values:
+  files:
+    - zarf-values.yaml
+  schema: zarf-values.schema.json
+
 components:
   - name: metallb-uds-exemption
     description: Ensure that the speaker pod is allowed to schedule
@@ -45,6 +50,9 @@ components:
         namespace: uds-policy-exemptions
         localPath: ./charts/exemption
         version: 0.1.0
+        values:
+          - sourcePath: .exemption
+            targetPath: .
 
   - name: metallb
     required: true
