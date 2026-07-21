@@ -18,11 +18,28 @@ components:
         version: 0.16.1
         valuesFiles:
           - "../values/common-values.yaml"
+        values:
+          - sourcePath: .metallb
+            targetPath: .
+            excludePaths:
+              - .metallb.imagePullSecrets
+              - .metallb.controller.image
+              - .metallb.controller.securityContext
+              - .metallb.speaker.image
+              - .metallb.speaker.securityContext
+              - .metallb.speaker.frr.image
+              - .metallb.crds
+              - .metallb.frr-k8s.frrk8s.image
+              - .metallb.frr-k8s.frrk8s.frr.image
+              - .metallb.frr-k8s.crds
       - name: addresspools
         serverSideApply: "false"
         version: "0.1.2"
         namespace: metallb-system
         localPath: ../charts/addresspools
+        values:
+          - sourcePath: .addresspools
+            targetPath: .
         variables:
           - name: INTERFACE
             path: interface
