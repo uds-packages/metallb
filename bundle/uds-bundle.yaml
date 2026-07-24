@@ -10,14 +10,14 @@ metadata:
 packages:
   - name: init
     repository: ghcr.io/zarf-dev/packages/init
-    ref: v0.81.1
+    ref: v0.82.0
     keylessVerification:
       certificateIdentityRegexp: https://github.com/zarf-dev/zarf/.github/workflows/release.yml@refs/tags/v\d+\.\d+.\d+
       certificateOIDCIssuer: https://token.actions.githubusercontent.com
 
   - name: core-crds
     repository: ghcr.io/defenseunicorns/packages/uds/core-crds
-    ref: 1.8.0-upstream
+    ref: 1.9.0-upstream
 
   - name: metallb
     path: ../
@@ -25,6 +25,6 @@ packages:
 
   - name: core-base
     repository: ghcr.io/defenseunicorns/packages/uds/core-base
-    ref: 1.8.0-upstream
+    ref: 1.9.0-upstream
     optionalComponents:
       - istio-passthrough-gateway
