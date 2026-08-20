@@ -1,0 +1,753 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "addresspools": {
+      "properties": {
+        "adminIngress": {
+          "properties": {
+            "ipAddressPool": {
+              "type": "string"
+            },
+            "matchLabels": {
+              "properties": {
+                "app": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "namespace": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "default": {
+          "properties": {
+            "ipAddressPoolCIDR": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "interface": {
+          "type": "string"
+        },
+        "passthroughIngress": {
+          "properties": {
+            "ipAddressPool": {
+              "type": "string"
+            },
+            "matchLabels": {
+              "properties": {
+                "app": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "namespace": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "tenantIngress": {
+          "properties": {
+            "ipAddressPool": {
+              "type": "string"
+            },
+            "matchLabels": {
+              "properties": {
+                "app": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "namespace": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "exemption": {
+      "properties": {
+        "exemptionEnabled": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "metallb": {
+      "properties": {
+        "controller": {
+          "properties": {
+            "affinity": {
+              "properties": {},
+              "type": "object"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "extraContainers": {
+              "type": "array"
+            },
+            "labels": {
+              "properties": {},
+              "type": "object"
+            },
+            "livenessProbe": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "failureThreshold": {
+                  "type": "number"
+                },
+                "initialDelaySeconds": {
+                  "type": "number"
+                },
+                "periodSeconds": {
+                  "type": "number"
+                },
+                "port": {
+                  "type": "number"
+                },
+                "successThreshold": {
+                  "type": "number"
+                },
+                "timeoutSeconds": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "logLevel": {
+              "type": "string"
+            },
+            "nodeSelector": {
+              "properties": {},
+              "type": "object"
+            },
+            "podAnnotations": {
+              "properties": {},
+              "type": "object"
+            },
+            "priorityClassName": {
+              "type": "string"
+            },
+            "readinessProbe": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "failureThreshold": {
+                  "type": "number"
+                },
+                "initialDelaySeconds": {
+                  "type": "number"
+                },
+                "periodSeconds": {
+                  "type": "number"
+                },
+                "port": {
+                  "type": "number"
+                },
+                "successThreshold": {
+                  "type": "number"
+                },
+                "timeoutSeconds": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "resources": {
+              "properties": {},
+              "type": "object"
+            },
+            "runtimeClassName": {
+              "type": "string"
+            },
+            "serviceAccount": {
+              "properties": {
+                "annotations": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "create": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "strategy": {
+              "properties": {
+                "type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "tolerations": {
+              "type": "array"
+            },
+            "webhookMode": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "frr-k8s": {
+          "properties": {
+            "prometheus": {
+              "properties": {
+                "serviceMonitor": {
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "frrk8s": {
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "external": {
+              "type": "boolean"
+            },
+            "namespace": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "fullnameOverride": {
+          "type": "string"
+        },
+        "loadBalancerClass": {
+          "type": "string"
+        },
+        "nameOverride": {
+          "type": "string"
+        },
+        "networkpolicies": {
+          "properties": {
+            "apiPort": {
+              "type": "number"
+            },
+            "defaultDeny": {
+              "type": "boolean"
+            },
+            "enabled": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        },
+        "prometheus": {
+          "properties": {
+            "metricsPort": {
+              "type": "number"
+            },
+            "namespace": {
+              "type": "string"
+            },
+            "podMonitor": {
+              "properties": {
+                "additionalLabels": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "annotations": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "interval": {
+                  "type": "string"
+                },
+                "jobLabel": {
+                  "type": "string"
+                },
+                "metricRelabelings": {
+                  "type": "array"
+                },
+                "relabelings": {
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "prometheusRule": {
+              "properties": {
+                "additionalLabels": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "addressPoolExhausted": {
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "excludePools": {
+                      "type": "string"
+                    },
+                    "labels": {
+                      "properties": {
+                        "severity": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "addressPoolUsage": {
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "excludePools": {
+                      "type": "string"
+                    },
+                    "thresholds": {
+                      "items": {
+                        "properties": {
+                          "labels": {
+                            "properties": {
+                              "severity": {
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "percent": {
+                            "type": "number"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                },
+                "annotations": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "bgpSessionDown": {
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "labels": {
+                      "properties": {
+                        "severity": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "configNotLoaded": {
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "labels": {
+                      "properties": {
+                        "severity": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "extraAlerts": {
+                  "type": "array"
+                },
+                "staleConfig": {
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "labels": {
+                      "properties": {
+                        "severity": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "rbacPrometheus": {
+              "type": "boolean"
+            },
+            "scrapeAnnotations": {
+              "type": "boolean"
+            },
+            "serviceAccount": {
+              "type": "string"
+            },
+            "serviceMonitor": {
+              "properties": {
+                "controller": {
+                  "properties": {
+                    "additionalLabels": {
+                      "properties": {},
+                      "type": "object"
+                    },
+                    "annotations": {
+                      "properties": {},
+                      "type": "object"
+                    },
+                    "tlsConfig": {
+                      "properties": {
+                        "insecureSkipVerify": {
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "interval": {
+                  "type": "string"
+                },
+                "jobLabel": {
+                  "type": "string"
+                },
+                "metricRelabelings": {
+                  "type": "array"
+                },
+                "relabelings": {
+                  "type": "array"
+                },
+                "speaker": {
+                  "properties": {
+                    "additionalLabels": {
+                      "properties": {},
+                      "type": "object"
+                    },
+                    "annotations": {
+                      "properties": {},
+                      "type": "object"
+                    },
+                    "tlsConfig": {
+                      "properties": {
+                        "insecureSkipVerify": {
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "rbac": {
+          "properties": {
+            "create": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        },
+        "speaker": {
+          "properties": {
+            "affinity": {
+              "properties": {},
+              "type": "object"
+            },
+            "bgpDebounceTimeout": {
+              "type": "string"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "excludeInterfaces": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            },
+            "extraContainers": {
+              "type": "array"
+            },
+            "frr": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "metricsPort": {
+                  "type": "number"
+                },
+                "resources": {
+                  "properties": {},
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "frrMetrics": {
+              "properties": {
+                "resources": {
+                  "properties": {},
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "ignoreExcludeLB": {
+              "type": "boolean"
+            },
+            "initContainers": {
+              "properties": {
+                "cpFrrFiles": {
+                  "properties": {
+                    "resources": {
+                      "properties": {},
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "cpMetrics": {
+                  "properties": {
+                    "resources": {
+                      "properties": {},
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "cpReloader": {
+                  "properties": {
+                    "resources": {
+                      "properties": {},
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "labels": {
+              "properties": {},
+              "type": "object"
+            },
+            "livenessProbe": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "failureThreshold": {
+                  "type": "number"
+                },
+                "initialDelaySeconds": {
+                  "type": "number"
+                },
+                "periodSeconds": {
+                  "type": "number"
+                },
+                "port": {
+                  "type": "number"
+                },
+                "successThreshold": {
+                  "type": "number"
+                },
+                "timeoutSeconds": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "logLevel": {
+              "type": "string"
+            },
+            "memberlist": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "mlBindAddrOverride": {
+                  "type": "string"
+                },
+                "mlBindPort": {
+                  "type": "number"
+                },
+                "mlSecretKeyPath": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "nodeSelector": {
+              "properties": {},
+              "type": "object"
+            },
+            "podAnnotations": {
+              "properties": {},
+              "type": "object"
+            },
+            "priorityClassName": {
+              "type": "string"
+            },
+            "readinessProbe": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "failureThreshold": {
+                  "type": "number"
+                },
+                "initialDelaySeconds": {
+                  "type": "number"
+                },
+                "periodSeconds": {
+                  "type": "number"
+                },
+                "port": {
+                  "type": "number"
+                },
+                "successThreshold": {
+                  "type": "number"
+                },
+                "timeoutSeconds": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "reloader": {
+              "properties": {
+                "resources": {
+                  "properties": {},
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "resources": {
+              "properties": {},
+              "type": "object"
+            },
+            "runtimeClassName": {
+              "type": "string"
+            },
+            "serviceAccount": {
+              "properties": {
+                "annotations": {
+                  "properties": {},
+                  "type": "object"
+                },
+                "create": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "startupProbe": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "failureThreshold": {
+                  "type": "number"
+                },
+                "periodSeconds": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            },
+            "tolerateMaster": {
+              "type": "boolean"
+            },
+            "tolerations": {
+              "type": "array"
+            },
+            "updateStrategy": {
+              "properties": {
+                "type": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "tls": {
+          "properties": {
+            "cipherSuites": {
+              "type": "string"
+            },
+            "controllerMetricsTLSSecret": {
+              "type": "string"
+            },
+            "curvePreferences": {
+              "type": "string"
+            },
+            "minVersion": {
+              "type": "string"
+            },
+            "speakerMetricsTLSSecret": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "type": "object"
+}

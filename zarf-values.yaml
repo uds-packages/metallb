@@ -1,0 +1,11 @@
+# Copyright 2026 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+# Zarf Values defaults for the metallb package. Each top-level key maps onto one chart
+# (see zarf.yaml and common/zarf.yaml). Defaults intentionally stay empty so chart and
+# flavor values files remain the single source of truth; deployers override only what
+# they need. The existing Zarf variables (IP_ADDRESS_POOL, INTERFACE, etc.) continue to
+# work unchanged alongside these values.
+exemption: {}
+metallb: {}
+addresspools: {}
