@@ -32,30 +32,6 @@ components:
               - .metallb.frr-k8s.frrk8s.image
               - .metallb.frr-k8s.frrk8s.frr.image
               - .metallb.frr-k8s.crds
-      - name: addresspools
-        serverSideApply: "false"
-        version: "0.1.2"
-        namespace: metallb-system
-        localPath: ../charts/addresspools
-        values:
-          - sourcePath: .addresspools
-            targetPath: .
-        variables:
-          - name: INTERFACE
-            path: interface
-            description: The network interface of the K8s nodes which MetalLB should use
-          - name: IP_ADDRESS_POOL
-            path: default.ipAddressPoolCIDR
-            description: The pool of IP addresses to use for ingress to the cluster
-          - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
-            path: adminIngress.ipAddressPool
-            description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
-          - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
-            path: passthroughIngress.ipAddressPool
-            description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
-          - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
-            path: tenantIngress.ipAddressPool
-            description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
     actions:
       onDeploy:
         before:
@@ -91,3 +67,78 @@ components:
               ./zarf tools kubectl delete daemonset -n metallb-system speaker || true
               ./zarf tools kubectl delete deployment -n metallb-system controller || true
               ./zarf tools kubectl delete service -n metallb-system metallb-webhook-service || true
+
+  - name: addresspools
+    required: true
+    charts:
+      - name: addresspools
+        serverSideApply: "false"
+        version: "0.1.2"
+        namespace: metallb-system
+        localPath: ../charts/addresspools
+        values:
+          - sourcePath: .addresspools
+            targetPath: .
+        variables:
+          - name: INTERFACE
+            path: interface
+            description: The network interface of the K8s nodes which MetalLB should use
+          - name: IP_ADDRESS_POOL
+            path: default.ipAddressPoolCIDR
+            description: The pool of IP addresses to use for ingress to the cluster
+          - name: IP_ADDRESS_ADMIN_INGRESSGATEWAY
+            path: adminIngress.ipAddressPool
+            description: When using this package in concert with UDS Core, the IP address of the admin-ingressgateway service
+          - name: IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY
+            path: passthroughIngress.ipAddressPool
+            description: When using this package in concert with the IDAM package, the IP address of the keycloak-ingressgateway service
+          - name: IP_ADDRESS_TENANT_INGRESSGATEWAY
+            path: tenantIngress.ipAddressPool
+            description: When using this package in concert with UDS Core, the IP address of the tenant-ingressgateway service
+    actions:
+      onDeploy:
+        before:
+          # The address pools are admitted by this Service's webhook. Its endpoints
+          # can lag the controller rollout after an upgrade recreates the Service.
+          - description: Waiting for the MetalLB webhook Service...
+            cmd: |
+              set -eu
+
+              KUBECTL="./zarf tools kubectl"
+              $KUBECTL rollout status deployment/metallb-controller -n metallb-system --timeout=300s
+
+              for attempt in $(seq 1 60); do
+                READY_ENDPOINT=$($KUBECTL get endpointslice -n metallb-system -l kubernetes.io/service-name=metallb-webhook-service -o jsonpath='{range .items[*].endpoints[?(@.conditions.ready==true)]}{.addresses[0]}{end}' 2>/dev/null || true)
+                if [ -n "$READY_ENDPOINT" ]; then
+                  break
+                fi
+                sleep 2
+              done
+              if [ -z "${READY_ENDPOINT:-}" ]; then
+                echo "MetalLB webhook Service has no ready EndpointSlice endpoint" >&2
+                exit 1
+              fi
+
+              for attempt in $(seq 1 30); do
+                PORT_FORWARD_LOG=$(mktemp)
+                $KUBECTL port-forward -n metallb-system service/metallb-webhook-service 9443:443 >"$PORT_FORWARD_LOG" 2>&1 &
+                PORT_FORWARD_PID=$!
+
+                for probe in $(seq 1 5); do
+                  if curl --silent --show-error --insecure --connect-timeout 2 --max-time 5 https://127.0.0.1:9443/ >/dev/null; then
+                    kill "$PORT_FORWARD_PID" 2>/dev/null || true
+                    wait "$PORT_FORWARD_PID" 2>/dev/null || true
+                    rm -f "$PORT_FORWARD_LOG"
+                    exit 0
+                  fi
+                  sleep 1
+                done
+
+                kill "$PORT_FORWARD_PID" 2>/dev/null || true
+                wait "$PORT_FORWARD_PID" 2>/dev/null || true
+                rm -f "$PORT_FORWARD_LOG"
+                sleep 2
+              done
+
+              echo "MetalLB webhook Service did not become reachable" >&2
+              exit 1
