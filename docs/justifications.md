@@ -20,3 +20,11 @@ Given that MetalLB operates in the host namespace and needs to manipulate networ
 - DisallowHostNamespaces
 - RestrictCapabilities
 ```
+
+## Validation Webhook Failure Policy
+
+MetalLB's validating admission webhook uses `failurePolicy: Ignore`. The MetalLB chart and this package's IPAddressPool and L2Advertisement resources are deployed together, so a transient period without a ready endpoint for the newly created webhook Service can otherwise reject package installation or upgrade.
+
+When the webhook is available, it continues to validate all matching resources. If it is unavailable, Kubernetes accepts the resource without webhook validation. This is an intentional tradeoff because this package owns its default MetalLB configuration. Administrators who apply MetalLB configuration from separate packages should account for the possibility that a resource can be admitted during a webhook outage.
+
+See https://defense-unicorns.slack.com/archives/C029NJU2S4B/p1787699421554469 and [#151](https://github.com/uds-packages/metallb/issues/151)

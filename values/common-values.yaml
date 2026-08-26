@@ -17,3 +17,8 @@ speaker:
 
 frrk8s:
   enabled: false
+
+# Pool configuration is packaged with MetalLB. Allow it to be created during
+# transient webhook Service endpoint unavailability after an install or upgrade.
+crds:
+  validationFailurePolicy: Ignore
