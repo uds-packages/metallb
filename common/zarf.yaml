@@ -59,6 +59,15 @@ components:
     actions:
       onDeploy:
         before:
+          # Skip legacy Zarf variable validation when address pool package values are provided.
+          - description: Validating address pool configuration...
+            cmd: |
+              {{- if not .Values.addresspools }}
+              [ -n "$ZARF_VAR_IP_ADDRESS_POOL" ] || { [ -n "$ZARF_VAR_IP_ADDRESS_ADMIN_INGRESSGATEWAY" ] && [ -n "$ZARF_VAR_IP_ADDRESS_TENANT_INGRESSGATEWAY" ]; } || { echo "Invalid address pool configuration. Set either addresspools.default.ipAddressPoolCIDR (IP_ADDRESS_POOL) or both addresspools.adminIngress.ipAddressPool (IP_ADDRESS_ADMIN_INGRESSGATEWAY) and addresspools.tenantIngress.ipAddressPool (IP_ADDRESS_TENANT_INGRESSGATEWAY)."; exit 1; }
+              {{- else }}
+              :
+              {{- end }}
+            template: true
           - description: Fix Helm ownership metadata for backwards compat w/v0.1.2
             cmd: |
               ./zarf tools kubectl annotate secret -n metallb-system metallb-webhook-cert meta.helm.sh/release-name=metallb --overwrite=true || true
