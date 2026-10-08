@@ -14,10 +14,10 @@
                   "type": "string"
                 }
               },
-              "type": "object"
+              "type": ["object", "null"]
             },
             "namespace": {
-              "type": "string"
+              "type": ["string", "null"]
             }
           },
           "type": "object"
@@ -63,10 +63,10 @@
                   "type": "string"
                 }
               },
-              "type": "object"
+              "type": ["object", "null"]
             },
             "namespace": {
-              "type": "string"
+              "type": ["string", "null"]
             }
           },
           "type": "object"
