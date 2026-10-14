@@ -12,9 +12,13 @@ spec:
     - {{ .Values.tenantIngress.ipAddressPool }}/32
   serviceAllocation:
     priority: 50
+    {{- if kindIs "string" .Values.tenantIngress.namespace }}
     namespaces:
       - {{ .Values.tenantIngress.namespace }}
+    {{- end }}
+    {{- if kindIs "map" .Values.tenantIngress.matchLabels }}
     serviceSelectors:
       - matchLabels:
           {{- toYaml .Values.tenantIngress.matchLabels | nindent 10 }}
+    {{- end }}
 {{- end }}
