@@ -3,6 +3,6 @@
 
 image:
   repository: nginxinc/nginx-unprivileged
-  tag: 1.31.6-alpine
+  tag: 1.31.7-alpine
 
 host: passthrough

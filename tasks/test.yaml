@@ -29,7 +29,10 @@ tasks:
     actions:
       - cmd: |
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization versioning=docker
-          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:1.13.1-upstream --confirm
+          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:1.15.1-upstream \
+            --certificate-identity-regexp '^https://github\.com/defenseunicorns/uds-core/\.github/workflows/publish\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$' \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            --confirm
 
   - name: deploy-passthrough-test
     description: Build and deploy the local passthrough-test package (backend behind the passthrough gateway)
