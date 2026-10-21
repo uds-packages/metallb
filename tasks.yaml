@@ -13,7 +13,6 @@ includes:
   - actions: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.32.1/tasks/actions.yaml
   - badge: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.32.1/tasks/badge.yaml
   - upgrade: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.32.1/tasks/upgrade.yaml
-  - compliance: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.32.1/tasks/compliance.yaml
 
 tasks:
   - name: default

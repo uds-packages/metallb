@@ -18,6 +18,9 @@ packages:
   - name: core-crds
     repository: ghcr.io/defenseunicorns/packages/uds/core-crds
     ref: 1.15.1-upstream
+    keylessVerification:
+      certificateIdentityRegexp: ^https://github\.com/defenseunicorns/uds-core/\.github/workflows/publish\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$
+      certificateOIDCIssuer: https://token.actions.githubusercontent.com
 
   - name: metallb
     path: ../
@@ -26,5 +29,8 @@ packages:
   - name: core-base
     repository: ghcr.io/defenseunicorns/packages/uds/core-base
     ref: 1.15.1-upstream
+    keylessVerification:
+      certificateIdentityRegexp: ^https://github\.com/defenseunicorns/uds-core/\.github/workflows/publish\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$
+      certificateOIDCIssuer: https://token.actions.githubusercontent.com
     optionalComponents:
       - istio-passthrough-gateway
