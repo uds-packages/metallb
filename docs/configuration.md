@@ -2,6 +2,14 @@
 
 MetalLB in this package is configured through [MetalLB UDS package](https://github.com/uds-packages/metallb/) as well as a UDS configuration chart that supports the following:
 
+## Test Bundle
+
+Tasks default to `NEXT_MODE=true` and use [`bundle/bundle.uds.hcl`](../bundle/bundle.uds.hcl).
+Set package values in [`metallb.yaml`](../bundle/values/metallb.yaml).
+
+Set network-specific IP addresses and options in
+[`bundle/config.uds.hcl`](../bundle/config.uds.hcl).
+
 ## Gateway Pool Service Eligibility
 
 The `addresspools.adminIngress` and `addresspools.tenantIngress` IPAddressPools restrict allocation to their corresponding Istio gateway namespace and `app` label by default. Set `namespace` to `null` to allow Services in any namespace, or `matchLabels` to `null` to allow Services with any labels. You can remove either restriction independently or both together.
