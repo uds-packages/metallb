@@ -92,7 +92,7 @@ tasks:
           - name: METALLB_RANGE
       - task: deploy:test-bundle
         with:
-          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE}"
+          options: "--set ip_address_pool=${METALLB_RANGE}"
       - task: create-dev-package
       - task: create-deploy-test-bundle
 
