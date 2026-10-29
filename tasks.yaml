@@ -1,6 +1,10 @@
 # Copyright 2024-2026 Defense Unicorns
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
+variables:
+  - name: NEXT_MODE
+    default: "true"
+
 includes:
   - test: ./tasks/test.yaml
   - cluster: ./tasks/cluster.yaml
@@ -45,7 +49,7 @@ tasks:
           - name: PASSTHROUGH_IP
       - task: deploy:test-bundle
         with:
-          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE} --set IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY=${PASSTHROUGH_IP}"
+          options: "--set ip_address_pool=${METALLB_RANGE} --set ip_address_passthrough_ingressgateway=${PASSTHROUGH_IP}"
       - task: test:all
 
   - name: dev
@@ -65,7 +69,7 @@ tasks:
           - name: PASSTHROUGH_IP
       - task: deploy:test-bundle
         with:
-          options: "--set IP_ADDRESS_POOL=${METALLB_RANGE} --set IP_ADDRESS_PASSTHROUGH_INGRESSGATEWAY=${PASSTHROUGH_IP}"
+          options: "--set ip_address_pool=${METALLB_RANGE} --set ip_address_passthrough_ingressgateway=${PASSTHROUGH_IP}"
 
 # CI will execute the following (via uds-common/.github/workflows/callable-[test|publish].yaml) so they need to be here with these names
 

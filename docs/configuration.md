@@ -2,6 +2,53 @@
 
 MetalLB in this package is configured through [MetalLB UDS package](https://github.com/uds-packages/metallb/) as well as a UDS configuration chart that supports the following:
 
+## Test Bundle
+
+The test bundle uses `bundle/bundle.uds.hcl`. Set `CLI_FEATURES=NextMode=true`
+for direct bundle commands. The repository tasks configure this automatically.
+
+Set network-specific addresses in `bundle/config.uds.hcl`:
+
+```hcl
+variables = {
+  ip_address_pool = "172.21.1.240-172.21.1.250"
+  ip_address_passthrough_ingressgateway = "172.21.1.239"
+}
+```
+
+Use addresses available on your cluster's network. Alternatively, set both
+`ip_address_admin_ingressgateway` and `ip_address_tenant_ingressgateway` instead of
+`ip_address_pool`. The optional `interface` variable selects the nodes' network interface.
+The defaults in `bundle/defaults.uds.hcl` are empty strings; supply addresses before deploying.
+`bundle/values/metallb.yaml` maps these variables to the package's `addresspools` values.
+
+Build the package and test bundle with the repository tasks:
+
+```bash
+uds run create-dev-package
+uds run create:test-bundle
+uds run deploy:test-bundle
+```
+
+These tasks expect the local `./uds` and `./zarf` binaries installed by the shared setup tasks.
+The bundle references the unflavored local package archive; `create:test-bundle` copies the
+selected `FLAVOR` archive to that filename. Remote dependency versions remain pinned to `upstream`.
+
+For direct deployment of the created artifact, pass the config explicitly:
+
+```bash
+CLI_FEATURES=NextMode=true uds bundle deploy \
+  bundle/uds-bundle-metallb-test-<architecture>-dev.tar.zst \
+  --config bundle/config.uds.hcl --skip-signature-verification
+```
+
+The test bundle artifact and local MetalLB package are unsigned. The signature bypass above
+is for local testing; remote package signatures are still verified during bundle creation.
+Use a signed artifact and a trusted verification policy for production.
+
+Deployment flags override `config.uds.hcl`, which overrides `defaults.uds.hcl`.
+For example, use `--set ip_address_pool=172.21.1.240-172.21.1.250` with a bundle deploy command.
+
 ## Gateway Pool Service Eligibility
 
 The `addresspools.adminIngress` and `addresspools.tenantIngress` IPAddressPools restrict allocation to their corresponding Istio gateway namespace and `app` label by default. Set `namespace` to `null` to allow Services in any namespace, or `matchLabels` to `null` to allow Services with any labels. You can remove either restriction independently or both together.
