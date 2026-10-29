@@ -1,0 +1,13 @@
+# Copyright 2026 Defense Unicorns
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
+
+addresspools:
+  default:
+    ipAddressPoolCIDR: "{{ .vars.ip_address_pool }}"
+  adminIngress:
+    ipAddressPool: "{{ .vars.ip_address_admin_ingressgateway }}"
+  tenantIngress:
+    ipAddressPool: "{{ .vars.ip_address_tenant_ingressgateway }}"
+  passthroughIngress:
+    ipAddressPool: "{{ .vars.ip_address_passthrough_ingressgateway }}"
+  interface: "{{ .vars.interface }}"
