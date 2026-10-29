@@ -22,32 +22,6 @@ Use addresses available on your cluster's network. Alternatively, set both
 The defaults in `bundle/defaults.uds.hcl` are empty strings; supply addresses before deploying.
 `bundle/values/metallb.yaml` maps these variables to the package's `addresspools` values.
 
-Build the package and test bundle with the repository tasks:
-
-```bash
-uds run create-dev-package
-uds run create:test-bundle
-uds run deploy:test-bundle
-```
-
-These tasks expect the local `./uds` and `./zarf` binaries installed by the shared setup tasks.
-The bundle references the unflavored local package archive; `create:test-bundle` copies the
-selected `FLAVOR` archive to that filename. Remote dependency versions remain pinned to `upstream`.
-
-For direct deployment of the created artifact, pass the config explicitly:
-
-```bash
-CLI_FEATURES=NextMode=true uds bundle deploy \
-  bundle/uds-bundle-metallb-test-<architecture>-dev.tar.zst \
-  --config bundle/config.uds.hcl --skip-signature-verification
-```
-
-The test bundle artifact and local MetalLB package are unsigned. The signature bypass above
-is for local testing; remote package signatures are still verified during bundle creation.
-Use a signed artifact and a trusted verification policy for production.
-
-Deployment flags override `config.uds.hcl`, which overrides `defaults.uds.hcl`.
-For example, use `--set ip_address_pool=172.21.1.240-172.21.1.250` with a bundle deploy command.
 
 ## Gateway Pool Service Eligibility
 
