@@ -4,24 +4,11 @@ MetalLB in this package is configured through [MetalLB UDS package](https://gith
 
 ## Test Bundle
 
-The test bundle uses `bundle/bundle.uds.hcl`. Set `CLI_FEATURES=NextMode=true`
-for direct bundle commands. The repository tasks configure this automatically.
+Tasks default to `NEXT_MODE=true` and use [`bundle/bundle.uds.hcl`](../bundle/bundle.uds.hcl).
+Set package values in [`metallb.yaml`](../bundle/values/metallb.yaml).
 
-Set network-specific addresses in `bundle/config.uds.hcl`:
-
-```hcl
-variables = {
-  ip_address_pool = "172.21.1.240-172.21.1.250"
-  ip_address_passthrough_ingressgateway = "172.21.1.239"
-}
-```
-
-Use addresses available on your cluster's network. Alternatively, set both
-`ip_address_admin_ingressgateway` and `ip_address_tenant_ingressgateway` instead of
-`ip_address_pool`. The optional `interface` variable selects the nodes' network interface.
-The defaults in `bundle/defaults.uds.hcl` are empty strings; supply addresses before deploying.
-`bundle/values/metallb.yaml` maps these variables to the package's `addresspools` values.
-
+Set network-specific IP addresses and options in
+[`bundle/config.uds.hcl`](../bundle/config.uds.hcl).
 
 ## Gateway Pool Service Eligibility
 
