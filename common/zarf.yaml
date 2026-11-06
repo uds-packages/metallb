@@ -15,7 +15,7 @@ components:
         serverSideApply: "false"
         namespace: metallb-system
         url: https://metallb.github.io/metallb
-        version: 0.16.1
+        version: 0.16.2
         valuesFiles:
           - "../values/common-values.yaml"
         values:
