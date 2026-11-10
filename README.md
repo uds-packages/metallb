@@ -46,6 +46,33 @@ $ zarf package deploy oci://ghcr.io/defenseunicorns/packages/metallb:<version> \
 >   - Package versions can be found [here](https://github.com/uds-packages/metallb/pkgs/container/packages%2Fmetallb)
 >   - If you also want a 4th default IPAddressPool you can additionally set the `IP_ADDRESS_POOL` variable too. It should be an IP range, not a single address unlike the other variables which are single address. Ranges can be specified in either CIDR notation or "StartAddress-EndAddress" notation.
 
+## Releases
+
+The released packages can be found in [ghcr](https://github.com/uds-packages/metallb/pkgs/container/metallb).
+
+### Verify a Package
+
+Packages are signed using [Zarf's Keyless Signing](https://docs.zarf.dev/ref/package-signing/#using-keyless-signing).
+
+Packages are signed from the following versions onwards:
+
+| Flavor | First Signed Version |
+| --- | --- |
+| `upstream` | `0.16.1-uds.6` |
+| `registry1` | `0.16.1-uds.38` |
+| `unicorn` | `0.16.1-uds.38` |
+
+To verify a package, follow the below example:
+
+```bash
+uds zarf package verify "oci://ghcr.io/uds-packages/metallb:0.16.1-uds.6-upstream" \
+  --certificate-identity "https://github.com/uds-packages/metallb/.github/workflows/release.yaml@refs/heads/main" \
+  --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+```
+
+For a `unicorn` package, use `oci://ghcr.io/uds-packages/private/metallb:<VERSION>-unicorn`
+as the package source.
+
 ## Known Issues
 
 This package is meant as a simple way to get MetalLB working for smaller clusters and doesn't support many of the more advanced options that MetalLB has.
