@@ -2,6 +2,44 @@
 
 MetalLB in this package is configured through [MetalLB UDS package](https://github.com/uds-packages/metallb/) as well as a UDS configuration chart that supports the following:
 
+## Table of Contents
+
+- [Package Signature Verification](#package-signature-verification)
+- [Test Bundle](#test-bundle)
+- [Gateway Pool Service Eligibility](#gateway-pool-service-eligibility)
+- [UDS Exemption Optional Component](#uds-exemption-optional-component)
+
+## Package Signature Verification
+
+See [Verify a Package](../README.md#verify-a-package) in the README for the first signed releases and package source paths. Replace `<version>` and `<flavor>` with your package version and flavor. For signed releases, configure the settings below to avoid signature verification failures during bundle creation.
+
+### CLI Next — `bundle.uds.hcl`
+
+```hcl
+package "metallb" {
+  source = "oci://ghcr.io/uds-packages/metallb:<version>-<flavor>"
+
+  signature_verification {
+    keyless {
+      certificate_identity    = "https://github.com/uds-packages/metallb/.github/workflows/release.yaml@refs/heads/main"
+      certificate_oidc_issuer = "https://token.actions.githubusercontent.com"
+    }
+  }
+}
+```
+
+### Classic — `uds-bundle.yaml`
+
+```yaml
+packages:
+  - name: metallb
+    repository: ghcr.io/uds-packages/metallb
+    ref: <version>-<flavor>
+    keylessVerification:
+      certificateIdentity: https://github.com/uds-packages/metallb/.github/workflows/release.yaml@refs/heads/main
+      certificateOIDCIssuer: https://token.actions.githubusercontent.com
+```
+
 ## Test Bundle
 
 Tasks default to `NEXT_MODE=true` and use [`bundle/bundle.uds.hcl`](../bundle/bundle.uds.hcl).
