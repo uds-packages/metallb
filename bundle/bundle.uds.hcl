@@ -23,7 +23,7 @@ package "init" {
 }
 
 package "core-crds" {
-  source     = "oci://ghcr.io/defenseunicorns/packages/uds/core-crds:1.17.0-upstream"
+  source     = "oci://ghcr.io/defenseunicorns/packages/uds/core-crds:1.17.1-upstream"
   depends_on = [package.init]
 
   signature_verification {
@@ -46,7 +46,7 @@ package "metallb" {
 }
 
 package "core-base" {
-  source              = "oci://ghcr.io/defenseunicorns/packages/uds/core-base:1.17.0-upstream"
+  source              = "oci://ghcr.io/defenseunicorns/packages/uds/core-base:1.17.1-upstream"
   depends_on          = [package.metallb]
   optional_components = ["istio-passthrough-gateway"]
 
