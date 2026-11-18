@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
 
 includes:
-  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.34.0/tasks/deploy.yaml
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.34.1/tasks/deploy.yaml
 
 tasks:
   - name: all
@@ -29,7 +29,7 @@ tasks:
     actions:
       - cmd: |
           # renovate: datasource=docker depName=ghcr.io/defenseunicorns/packages/uds/core-identity-authorization versioning=docker
-          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:1.17.0-upstream \
+          ./uds zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds/core-identity-authorization:1.17.2-upstream \
             --certificate-identity-regexp '^https://github\.com/defenseunicorns/uds-core/\.github/workflows/publish\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$' \
             --certificate-oidc-issuer https://token.actions.githubusercontent.com \
             --confirm
